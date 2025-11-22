@@ -22,13 +22,61 @@ class OpaqueScanner:
         self.CIRCUIT_THRESHOLD = 1000 # matches/sec
         
         # Pre-compile regexes for performance
-        # This is a simplified "Context-Aware" engine. 
-        # In the Rust version, this would be a single pass scanner.
+        # This is a comprehensive "Context-Aware" engine covering all South America + International
         self.patterns = {
+            # Brazil
             Validators.BR.CPF: re.compile(r'\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b'),
             Validators.BR.CNPJ: re.compile(r'\b\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}\b'),
-            Validators.FINANCE.CREDIT_CARD: re.compile(r'\b(?:\d[ -]*?){13,16}\b'),
+            Validators.BR.RG: re.compile(r'\b\d{7,9}\b'),
+            Validators.BR.CNH: re.compile(r'\b\d{11}\b'),
+            Validators.BR.RENAVAM: re.compile(r'\b\d{11}\b'),
             Validators.BR.PIX: re.compile(r'(?:\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b)|(?:\+55\d{10,11})|(?:\b[\w\.-]+@[\w\.-]+\.\w+\b)', re.IGNORECASE),
+            Validators.BR.PLACA_MERCOSUL: re.compile(r'\b[A-Z]{3}\d[A-Z]\d{2}\b', re.IGNORECASE),
+            Validators.BR.PLACA_ANTIGA: re.compile(r'\b[A-Z]{3}-?\d{4}\b', re.IGNORECASE),
+            
+            # Argentina
+            Validators.AR.CUIL: re.compile(r'\b\d{2}-?\d{8}-?\d\b'),
+            Validators.AR.DNI: re.compile(r'\b\d{7,8}\b'),
+            
+            # Chile
+            Validators.CL.RUT: re.compile(r'\b\d{1,2}\.?\d{3}\.?\d{3}-?[0-9Kk]\b'),
+            
+            # Colombia
+            Validators.CO.CEDULA: re.compile(r'\b\d{6,10}\b'),
+            Validators.CO.NIT: re.compile(r'\b\d{9,15}\b'),
+            
+            # Peru
+            Validators.PE.DNI: re.compile(r'\b\d{8}\b'),
+            Validators.PE.RUC: re.compile(r'\b\d{11}\b'),
+            
+            # Uruguay
+            Validators.UY.CI: re.compile(r'\b\d{6,8}\b'),
+            Validators.UY.RUT: re.compile(r'\b\d{12}\b'),
+            
+            # Venezuela
+            Validators.VE.CI: re.compile(r'\b[VE]-?\d{6,9}\b', re.IGNORECASE),
+            Validators.VE.RIF: re.compile(r'\b[VEJPG]-?\d{8,9}\b', re.IGNORECASE),
+            
+            # Ecuador
+            Validators.EC.CEDULA: re.compile(r'\b\d{10}\b'),
+            Validators.EC.RUC: re.compile(r'\b\d{13}\b'),
+            
+            # Bolivia
+            Validators.BO.CI: re.compile(r'\b\d{6,9}\b'),
+            Validators.BO.NIT: re.compile(r'\b\d{7,}\b'),
+            
+            # Paraguay
+            Validators.PY.CI: re.compile(r'\b\d{6,8}\b'),
+            Validators.PY.RUC: re.compile(r'\b\d{6,}\b'),
+            
+            # Finance
+            Validators.FINANCE.CREDIT_CARD: re.compile(r'\b(?:\d[ -]*?){13,19}\b'),
+            Validators.FINANCE.IBAN: re.compile(r'\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b', re.IGNORECASE),
+            
+            # International
+            Validators.INTERNATIONAL.EMAIL: re.compile(r'\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b'),
+            Validators.INTERNATIONAL.PHONE: re.compile(r'\+?\d[\d\s\-\(\)]{7,}\d'),
+            Validators.INTERNATIONAL.PASSPORT: re.compile(r'\b[A-Z0-9]{6,9}\b', re.IGNORECASE),
         }
 
     def sanitize(self, text: str) -> str:

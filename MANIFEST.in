@@ -1,0 +1,13 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+recursive-include docs *.md
+recursive-include examples *.py
+recursive-include opaque *.py
+exclude .gitignore
+exclude .pypirc
+recursive-exclude tests *
+recursive-exclude benchmarks *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

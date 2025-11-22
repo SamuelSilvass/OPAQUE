@@ -1,28 +1,52 @@
 [build-system]
-requires = ["maturin>=1.0,<2.0"]
-build-backend = "maturin"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "opaque-logger"
 version = "0.1.0"
-description = "Deterministic Data Masking Engine with Rust Core"
+description = "Deterministic Data Masking Engine with Mathematical Validation - No AI Guessing"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "OPAQUE Team", email = "security@opaque.dev"}
+    {name = "Samuel Silva", email = "samuelsilvass@github.com"}
 ]
-keywords = ["security", "gdpr", "lgpd", "masking", "logging", "rust"]
+keywords = ["security", "gdpr", "lgpd", "masking", "logging", "data-protection", "cpf", "cnpj", "pii", "privacy"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "Programming Language :: Rust",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "regex>=2023.0.0",
     "cryptography>=41.0.0",
 ]
 
-[tool.maturin]
-features = ["pyo3/extension-module"]
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/SamuelSilvass/OPAQUE"
+Documentation = "https://github.com/SamuelSilvass/OPAQUE#readme"
+Repository = "https://github.com/SamuelSilvass/OPAQUE"
+Issues = "https://github.com/SamuelSilvass/OPAQUE/issues"
+
+[project.scripts]
+opaque = "opaque.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["opaque*"]
+exclude = ["tests*", "examples*", "benchmarks*"]

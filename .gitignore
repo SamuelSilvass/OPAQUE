@@ -55,3 +55,4 @@ temp_audit_test/
 # Environment
 .env
 .env.local
+.pypirc

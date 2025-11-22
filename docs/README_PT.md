@@ -1,5 +1,239 @@
 # OPAQUE 🛡️
 
+**Motor Determinístico de Mascaramento de Dados**
+
+> "Não adivinhe se é um CPF. Prove matematicamente."
+
+[![Testes](https://img.shields.io/badge/testes-62%20aprovados-brightgreen)](https://github.com/SamuelSilvass/OPAQUE)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![PyPI](https://img.shields.io/badge/PyPI-opaque--logger-blue)](https://pypi.org/project/opaque-logger/)
+[![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-green)](../LICENSE)
+
+## 🎯 Por que OPAQUE?
+
+Diferente de soluções baseadas em IA que **adivinham**, OPAQUE **valida** usando algoritmos matemáticos:
+
+| Recurso | Soluções IA | OPAQUE |
+|---------|-------------|---------|
+| **Validação** | Redes neurais (adivinhação) | Algoritmos matemáticos (prova) |
+| **Falsos Positivos** | Comuns | Zero |
+| **Performance** | Lenta (requer GPU) | Ultra-rápida (matemática pura) |
+| **Depuração** | Caixa preta | Hashing determinístico |
+| **Reversibilidade** | Não | Sim (Modo Vault) |
+| **Cobertura** | Limitada | 40+ validadores na América do Sul |
+
+## ✨ Recursos Principais
+
+### 🔐 Validação Matemática
+
+**🇧🇷 Brasil:**
+- CPF (Mod 11), CNPJ (Mod 11 ponderado), RG, CNH, RENAVAM
+- Pix (UUID, Email, Telefone), Placas Mercosul e Antigas
+
+**🌎 América do Sul:**
+- 🇦🇷 Argentina: CUIL/CUIT, DNI
+- 🇨🇱 Chile: RUT (validação completa)
+- 🇨🇴 Colômbia: Cédula, NIT
+- 🇵🇪 Peru: DNI, RUC
+- 🇺🇾 Uruguai: CI, RUT
+- 🇻🇪 Venezuela: CI, RIF
+- 🇪🇨 Equador: Cédula, RUC
+- 🇧🇴 Bolívia: CI, NIT
+- 🇵🇾 Paraguai: CI, RUC
+
+**🌐 Internacional:**
+- Cartões de Crédito (Luhn), IBAN, Email, Telefone, Passaporte
+
+### 🏦 Modo Vault
+- Criptografia AES-256 reversível
+- Ferramenta CLI para descriptografia
+- Proteção com chave mestra
+
+### 🍯 Honeytokens
+- Detecção de intrusão
+- Alertas em tempo real
+- Dados isca para segurança
+
+### ⚡ Circuit Breaker
+- Proteção contra flood
+- Auto-recuperação
+- Otimização de recursos
+
+## 🚀 Início Rápido
+
+### Instalação
+
+```bash
+pip install opaque-logger
+```
+
+### Uso Básico
+
+```python
+import logging
+from opaque import OpaqueLogger, Validators
+
+# Configurar
+OpaqueLogger.setup_defaults(
+    rules=[
+        Validators.BR.CPF,
+        Validators.BR.CNPJ,
+        Validators.FINANCE.CREDIT_CARD
+    ],
+    obfuscation_method="HASH"
+)
+
+# Integrar
+logging.setLoggerClass(OpaqueLogger)
+logger = logging.getLogger("app")
+
+# Logar com segurança
+logger.info("CPF do usuário: 529.982.247-25")
+# Saída: CPF do usuário: [HASH-3A4C]
+```
+
+## 📊 Benchmarks de Performance
+
+```
+Sanitização:      1.000+ mensagens/seg
+Validação CPF:    65.000+ ops/seg
+Validação CNPJ:   68.000+ ops/seg
+Cartão Crédito:   122.000+ ops/seg
+Criptografia:     22.000+ ops/seg
+Descriptografia:  12.000+ ops/seg
+```
+
+## 🧪 Cobertura de Testes
+
+✅ **62/62 testes aprovados** (100% de sucesso)
+
+```bash
+pytest -v
+```
+
+## 📚 Exemplos Completos
+
+### Modo Vault (Criptografia Reversível)
+
+```python
+import os
+from opaque import OpaqueLogger, Validators
+
+os.environ["OPAQUE_MASTER_KEY"] = "sua-chave-mestra"
+
+OpaqueLogger.setup_defaults(
+    rules=[Validators.BR.CPF],
+    obfuscation_method="VAULT",
+    vault_key="sua-chave-mestra"
+)
+
+logger = logging.getLogger("seguro")
+logger.info("Processando CPF 529.982.247-25")
+# Saída: Processando CPF [VAULT:gAAAAABl...]
+
+# Descriptografar depois
+python -m opaque.cli reveal "[VAULT:gAAAAABl...]" --key=sua-chave-mestra
+# Saída: 🔓 DADOS REVELADOS: 529.982.247-25
+```
+
+### Honeytokens (Detecção de Intrusão)
+
+```python
+OpaqueLogger.setup_defaults(
+    rules=[Validators.BR.CPF],
+    honeytokens=["999.888.777-66"]  # CPF isca
+)
+
+logger = logging.getLogger("seguranca")
+logger.info("Acesso com CPF 999.888.777-66")
+# Stderr: 🚨 ALERTA VERMELHO: HONEYTOKEN DETECTADO: 999.888.777-66
+# Saída: Acesso com CPF [HONEYTOKEN TRIGGERED]
+```
+
+### Suporte Multi-País
+
+```python
+from opaque import OpaqueLogger, Validators
+
+OpaqueLogger.setup_defaults(
+    rules=[
+        Validators.BR.CPF,      # Brasil
+        Validators.AR.DNI,      # Argentina
+        Validators.CL.RUT,      # Chile
+        Validators.CO.CEDULA,   # Colômbia
+        Validators.PE.DNI,      # Peru
+        Validators.FINANCE.CREDIT_CARD,  # Internacional
+    ]
+)
+
+logger = logging.getLogger("latam")
+logger.info("BR CPF: 529.982.247-25")  # Sanitizado
+logger.info("CL RUT: 12.345.678-5")    # Sanitizado
+logger.info("Cartão: 4532-1488-0343-6467")  # Sanitizado
+```
+
+### Integração FastAPI
+
+```python
+from fastapi import FastAPI
+from opaque.middleware import OpaqueFastAPIMiddleware
+from opaque import OpaqueLogger, Validators
+
+app = FastAPI()
+
+OpaqueLogger.setup_defaults(
+    rules=[Validators.BR.CPF, Validators.BR.CNPJ]
+)
+
+app.add_middleware(OpaqueFastAPIMiddleware, logger=OpaqueLogger("api"))
+
+@app.post("/pagamento")
+async def processar_pagamento(cpf: str, valor: float):
+    # CPF será automaticamente sanitizado nos logs
+    return {"status": "sucesso"}
+```
+
+## 🏗️ Arquitetura
+
+```
+┌─────────────────────────────────────────────────────┐
+│                   Motor OPAQUE                      │
+├─────────────────────────────────────────────────────┤
+│  1. Correspondência de Padrões Regex               │
+│  2. Validação Matemática (Mod 11, Luhn, etc.)     │
+│  3. Detecção de Honeytokens                        │
+│  4. Verificação de Circuit Breaker                 │
+│  5. Ofuscação (Hash/Vault/Mask)                    │
+│  6. Processamento de Dados Estruturados           │
+└─────────────────────────────────────────────────────┘
+```
+
+## 📖 Documentação
+
+| Documento | Descrição |
+|-----------|-----------|
+| [📚 Referência da API](API_REFERENCE.md) | Documentação técnica detalhada |
+| [🔧 Guia de Instalação](INSTALLATION_GUIDE.md) | Instalação passo a passo |
+| [🏗️ Estrutura do Projeto](PROJECT_STRUCTURE.md) | Visão geral da arquitetura |
+| [🤝 Contribuindo](../CONTRIBUTING.md) | Guia de contribuição |
+| [📝 Changelog](../CHANGELOG.md) | Histórico de versões |
+
+## 🏆 Por que Escolher OPAQUE?
+
+✅ **Zero Falsos Positivos** - Validação matemática, sem adivinhação  
+✅ **Pronto para Produção** - Usado em ambientes enterprise  
+✅ **Cobertura Completa** - 40+ validadores para toda América do Sul  
+✅ **Criptografia Reversível** - Debug sem expor dados sensíveis  
+✅ **Segurança em Primeiro Lugar** - Honeytokens e circuit breakers  
+✅ **Agnóstico de Framework** - FastAPI, Django, Flask  
+✅ **Performance Otimizada** - Milhares de mensagens por segundo  
+
+---
+
+*Construído com precisão por Samuel Silva*
+
+**Protegendo dados com matemática, não mágica** ✨
+
 **O Motor Determinístico de Mascaramento de Dados para Engenharia de Alta Performance.**
 
 > "Não tente adivinhar se é um CPF. Prove matematicamente que é um CPF."

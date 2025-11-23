@@ -210,15 +210,44 @@ class OpaqueLogger(logging.Logger):
     _default_obfuscation_method = "HASH"
     _default_vault_key = None
     _default_honeytokens = []
+    _default_hash_function = None
+    _default_vault_implementation = None
+    _default_honeytoken_handler = None
+    _default_anonymization_strategy = None
 
     @classmethod
-    def setup_defaults(cls, rules: List[Validator], obfuscation_method: str = "HASH", vault_key: str = None, honeytokens: List[str] = None):
+    def setup_defaults(
+        cls, 
+        rules: List[Validator], 
+        obfuscation_method: str = "HASH", 
+        vault_key: str = None, 
+        honeytokens: List[str] = None,
+        hash_function: Optional[Callable[[str], str]] = None,
+        vault_implementation: Optional[VaultInterface] = None,
+        honeytoken_handler: Optional[HoneytokenHandler] = None,
+        anonymization_strategy: Optional[AnonymizationStrategy] = None
+    ):
         cls._default_rules = rules
         cls._default_obfuscation_method = obfuscation_method
         cls._default_vault_key = vault_key
         cls._default_honeytokens = honeytokens
+        cls._default_hash_function = hash_function
+        cls._default_vault_implementation = vault_implementation
+        cls._default_honeytoken_handler = honeytoken_handler
+        cls._default_anonymization_strategy = anonymization_strategy
 
-    def __init__(self, name: str = "opaque", rules: List[Validator] = None, obfuscation_method: str = None, vault_key: str = None, honeytokens: List[str] = None):
+    def __init__(
+        self, 
+        name: str = "opaque", 
+        rules: List[Validator] = None, 
+        obfuscation_method: str = None, 
+        vault_key: str = None, 
+        honeytokens: List[str] = None,
+        hash_function: Optional[Callable[[str], str]] = None,
+        vault_implementation: Optional[VaultInterface] = None,
+        honeytoken_handler: Optional[HoneytokenHandler] = None,
+        anonymization_strategy: Optional[AnonymizationStrategy] = None
+    ):
         super().__init__(name)
         # Use instance args if provided, else defaults
         effective_rules = rules if rules is not None else self._default_rules
@@ -226,7 +255,21 @@ class OpaqueLogger(logging.Logger):
         effective_key = vault_key if vault_key is not None else self._default_vault_key
         effective_honeytokens = honeytokens if honeytokens is not None else self._default_honeytokens
         
-        self.scanner = OpaqueScanner(effective_rules, effective_method, effective_key, effective_honeytokens)
+        effective_hash = hash_function if hash_function is not None else self._default_hash_function
+        effective_vault_impl = vault_implementation if vault_implementation is not None else self._default_vault_implementation
+        effective_honey_handler = honeytoken_handler if honeytoken_handler is not None else self._default_honeytoken_handler
+        effective_anon_strat = anonymization_strategy if anonymization_strategy is not None else self._default_anonymization_strategy
+        
+        self.scanner = OpaqueScanner(
+            rules=effective_rules, 
+            obfuscation_method=effective_method, 
+            vault_key=effective_key, 
+            honeytokens=effective_honeytokens,
+            hash_function=effective_hash,
+            vault_implementation=effective_vault_impl,
+            honeytoken_handler=effective_honey_handler,
+            anonymization_strategy=effective_anon_strat
+        )
         
     def _log(self, level, msg, args, exc_info=None, extra=None, stack_info=False, stacklevel=1):
         """

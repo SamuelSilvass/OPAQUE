@@ -5,6 +5,30 @@ All notable changes to OPAQUE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-11-23
+
+### 🛡️ Security & Compliance Update
+
+This release focuses on "Perfect Security" and addressing community feedback regarding LGPD/GDPR compliance and customization.
+
+### ✨ Added
+- **Dependency Injection System**: Fully implemented injection for Hash, Vault, and Honeytoken handlers.
+- **Anonymization Strategies**:
+  - `IrreversibleAnonymizer`: Uses random UUIDs for true anonymization (Right to be Forgotten compliant).
+  - `DeterministicPseudonymizer`: Uses HMAC-SHA256 with secret key for audit trails (Pseudonymization).
+- **Compliance Guide**: New documentation detailing when to use Anonymization vs Pseudonymization.
+
+### 🔧 Improved
+- **Python Core Optimization**: Enhanced performance of the Python engine.
+- **Documentation Accuracy**: Clarified that the current engine is pure Python (high performance) to avoid confusion about Rust integration (which is planned for v2.0 but not active in v1.x).
+- **Test Coverage**: Added comprehensive tests for custom injections and anonymization strategies.
+
+### 🐛 Fixed
+- **Hash Reversibility**: Addressed concerns about simple hashing by introducing HMAC and salt support.
+- **Honeytoken Scalability**: Enabled database-backed honeytoken checks via custom handlers.
+
+---
+
 ## [1.1.0] - 2025-11-23
 
 ### 🚀 Major Update - Enterprise Customization & LGPD/GDPR Compliance

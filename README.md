@@ -77,7 +77,27 @@ Unlike AI-based solutions that **guess**, OPAQUE **validates** using mathematica
 
 </td>
 </tr>
+</tr>
 </table>
+
+## 🛡️ Enterprise Customization & Compliance (New in v1.1.1)
+
+OPAQUE v1.1.1 introduces powerful dependency injection to meet strict enterprise requirements:
+
+### 💉 Dependency Injection
+- **Custom Hash Functions**: Inject your own hashing algorithms (e.g., HMAC-SHA512, Argon2).
+- **Custom Vaults**: Integrate with AWS Secrets Manager, HashiCorp Vault, or HSMs.
+- **Custom Honeytoken Handlers**: Check honeytokens against Redis, Databases, or external APIs.
+
+### ⚖️ LGPD & GDPR Compliance
+We now provide explicit strategies for different compliance needs:
+
+| Strategy | Class | Use Case | Reversible? | Compliance |
+|----------|-------|----------|-------------|------------|
+| **Anonymization** | `IrreversibleAnonymizer` | Debugging, Errors | ❌ No | ✅ Not Personal Data |
+| **Pseudonymization** | `DeterministicPseudonymizer` | Audit Trails | ⚠️ Yes (with key) | ⚠️ Personal Data |
+
+See our [Compliance Guide](docs/COMPLIANCE_GUIDE.md) for details.
 
 ## 🚀 Quick Start
 

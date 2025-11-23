@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "opaque-logger"
-version = "1.1.0"
+version = "1.1.1"
 description = "🛡️ Enterprise Data Masking Engine - Custom Callbacks, LGPD/GDPR Compliance, 77+ Validators, Zero False Positives"
 readme = "README.md"
 requires-python = ">=3.8"

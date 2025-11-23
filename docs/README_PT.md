@@ -332,7 +332,7 @@ OPAQUE é uma biblioteca de sanitização de alta performance e consciente de co
 
 ## 🚀 Por que OPAQUE?
 
-*   **Núcleo em Rust**: Construído para velocidade. Processe gigabytes de logs sem travar sua aplicação.
+*   **Alta Performance**: Construído com Python otimizado e regex pré-compilado. Processe gigabytes de logs sem travar sua aplicação. (Extensões em Rust planejadas para v2.0).
 *   **Validação Determinística**: Calculamos o Dígito Verificador (Módulo 11, Luhn). Se a matemática não bater, não tocamos nos seus dados. Sem falsos positivos.
 *   **Impressão Digital Segura**: Em vez de `***`, usamos hashes SHA256 com sal (ex: `[HASH-XF92]`). Rastreie erros nos logs sem revelar identidade do usuário.
 *   **Integração Zero-Config**: Substituto direto para o `logging` padrão do Python.

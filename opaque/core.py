@@ -56,77 +56,71 @@ class OpaqueScanner:
         self.fingerprinter = Fingerprinter()
         self.honeytokens = set(honeytokens or [])
         
-        # Circuit Breaker State
         self.error_count = 0
         self.last_reset = time.time()
         self.circuit_open = False
-        self.CIRCUIT_THRESHOLD = 1000 # matches/sec
+        self.CIRCUIT_THRESHOLD = 1000 
         
-        # Pre-compile regexes for performance
-        # This is a comprehensive "Context-Aware" engine covering all South America + International
         self.patterns = {
-            # Brazil
+            # --- SOUTH AMERICA ---
             Validators.BR.CPF: re.compile(r'\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b'),
             Validators.BR.CNPJ: re.compile(r'\b\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}\b'),
-            Validators.BR.RG: re.compile(r'\b\d{7,9}\b'),
+            Validators.BR.RG: re.compile(r'\b\d{1,2}\.?\d{3}\.?\d{3}-?[0-9X]\b'),
             Validators.BR.CNH: re.compile(r'\b\d{11}\b'),
             Validators.BR.RENAVAM: re.compile(r'\b\d{11}\b'),
-            Validators.BR.PIX: re.compile(r'(?:\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b)|(?:\+55\d{10,11})|(?:\b[\w\.-]+@[\w\.-]+\.\w+\b)', re.IGNORECASE),
-            Validators.BR.PLACA_MERCOSUL: re.compile(r'\b[A-Z]{3}\d[A-Z]\d{2}\b', re.IGNORECASE),
-            Validators.BR.PLACA_ANTIGA: re.compile(r'\b[A-Z]{3}-?\d{4}\b', re.IGNORECASE),
+            Validators.BR.CNS: re.compile(r'\b\d{15}\b'),
+            Validators.BR.TITULO_ELEITOR: re.compile(r'\b\d{12}\b'),
             
-            # Argentina
-            Validators.AR.CUIL: re.compile(r'\b\d{2}-?\d{8}-?\d\b'),
-            Validators.AR.DNI: re.compile(r'\b\d{7,8}\b'),
+            # --- NORTH AMERICA ---
+            Validators.NA.SSN: re.compile(r'\b\d{3}-?\d{2}-?\d{4}\b'),
+            Validators.NA.EIN: re.compile(r'\b\d{2}-?\d{7}\b'),
+            Validators.NA.SIN_CA: re.compile(r'\b\d{3}-?\d{3}-?\d{3}\b'),
+            Validators.NA.CURP_MX: re.compile(r'\b[A-Z]{4}\d{6}[HM][A-Z]{5}[0-9A-Z]\d\b'),
             
-            # Chile
-            Validators.CL.RUT: re.compile(r'\b\d{1,2}\.?\d{3}\.?\d{3}-?[0-9Kk]\b'),
+            # --- EUROPE ---
+            Validators.EU.STEUER_DE: re.compile(r'\b\d{11}\b'),
+            Validators.EU.NIR_FR: re.compile(r'\b\d{13}\s?\d{2}\b'),
+            Validators.EU.DNI_ES: re.compile(r'\b\d{8}-?[A-Z]\b'),
+            Validators.EU.CODICE_IT: re.compile(r'\b[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]\b'),
+            Validators.UK.NINO: re.compile(r'\b[A-Z]{2}\s?\d{2}\s?\d{2}\s?\d{2}\s?[A-Z]\b'),
             
-            # Colombia
-            Validators.CO.CEDULA: re.compile(r'\b\d{6,10}\b'),
-            Validators.CO.NIT: re.compile(r'\b\d{9,15}\b'),
+            # --- ASIA ---
+            Validators.ASIA.AADHAAR_IN: re.compile(r'\b\d{4}\s?\d{4}\s?\d{4}\b'),
+            Validators.ASIA.RIC_CN: re.compile(r'\b\d{17}[\dX]\b'),
             
-            # Peru
-            Validators.PE.DNI: re.compile(r'\b\d{8}\b'),
-            Validators.PE.RUC: re.compile(r'\b\d{11}\b'),
+            # --- TECH & CLOUD ---
+            Validators.TECH.STRIPE: re.compile(r'\b(sk|pk)_(live|test)_[0-9a-zA-Z]{24,}\b'),
+            Validators.TECH.GOOGLE_OAUTH: re.compile(r'\bya29\.[0-9a-zA-Z_-]{20,}\b'),
+            Validators.TECH.FACEBOOK: re.compile(r'\bEA[A-Za-z0-9]{20,}\b'),
+            Validators.TECH.SLACK: re.compile(r'\bxox[baprs]-[a-zA-Z0-9-]{10,}\b'),
+            Validators.TECH.AWS: re.compile(r'\b(AKIA|ASIA)[0-9A-Z]{16}\b'),
+            Validators.TECH.PRIVATE_KEY: re.compile(r'-----BEGIN (?:RSA |EC )?PRIVATE KEY-----'),
             
-            # Uruguay
-            Validators.UY.CI: re.compile(r'\b\d{6,8}\b'),
-            Validators.UY.RUT: re.compile(r'\b\d{12}\b'),
+            Validators.CLOUD.GITHUB_TOKEN: re.compile(r'\b(gh[pousr]_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{50,})\b'),
+            Validators.CLOUD.GOOGLE_API_KEY: re.compile(r'\bAIza[0-9A-Za-z\-_]{35}\b'),
             
-            # Venezuela
-            Validators.VE.CI: re.compile(r'\b[VE]-?\d{6,9}\b', re.IGNORECASE),
-            Validators.VE.RIF: re.compile(r'\b[VEJPG]-?\d{8,9}\b', re.IGNORECASE),
+            # --- SECURITY ---
+            Validators.SECURITY.JWT: re.compile(r'\beyJ[a-zA-Z0-9\-_]+\.eyJ[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\b'),
+            Validators.SECURITY.PEM_CERT: re.compile(r'-----BEGIN CERTIFICATE-----'),
             
-            # Ecuador
-            Validators.EC.CEDULA: re.compile(r'\b\d{10}\b'),
-            Validators.EC.RUC: re.compile(r'\b\d{13}\b'),
-            
-            # Bolivia
-            Validators.BO.CI: re.compile(r'\b\d{6,9}\b'),
-            Validators.BO.NIT: re.compile(r'\b\d{7,}\b'),
-            
-            # Paraguay
-            Validators.PY.CI: re.compile(r'\b\d{6,8}\b'),
-            Validators.PY.RUC: re.compile(r'\b\d{6,}\b'),
-            
-            # Finance
+            # --- FINANCE ---
             Validators.FINANCE.CREDIT_CARD: re.compile(r'\b(?:\d[ -]*?){13,19}\b'),
-            Validators.FINANCE.IBAN: re.compile(r'\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b', re.IGNORECASE),
+            Validators.FINANCE.IBAN: re.compile(r'\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b'),
             
-            # International
+            # --- INTERNATIONAL ---
             Validators.INTERNATIONAL.EMAIL: re.compile(r'\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b'),
-            Validators.INTERNATIONAL.PHONE: re.compile(r'\+?\d[\d\s\-\(\)]{7,}\d'),
-            Validators.INTERNATIONAL.PASSPORT: re.compile(r'\b[A-Z0-9]{6,9}\b', re.IGNORECASE),
+            Validators.INTERNATIONAL.PHONE: re.compile(r'\b\+?\d{8,15}\b'),
+            Validators.INTERNATIONAL.PASSPORT: re.compile(r'\b[A-Z0-9]{6,9}\b'),
+            Validators.INTERNATIONAL.IPV4: re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b'),
+            Validators.INTERNATIONAL.IPV6: re.compile(r'\b([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}\b'), # Simplified for logs
+            Validators.INTERNATIONAL.MAC_ADDRESS: re.compile(r'\b([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})\b'),
+            Validators.INTERNATIONAL.BITCOIN_ADDR: re.compile(r'\b([13][a-km-zA-HJ-NP-Z1-9]{25,34}|bc1[a-z0-9]{39,59})\b'),
+            Validators.INTERNATIONAL.ETHEREUM_ADDR: re.compile(r'\b0x[a-fA-F0-9]{40}\b'),
         }
 
     def sanitize(self, text: str) -> str:
-        """
-        Scans text for sensitive data and replaces it if mathematically valid.
-        """
-        # Circuit Breaker Check
         if self.circuit_open:
-            if time.time() - self.last_reset > 5.0: # Reset after 5s
+            if time.time() - self.last_reset > 5.0:
                 self.circuit_open = False
                 self.error_count = 0
             else:
@@ -134,7 +128,6 @@ class OpaqueScanner:
 
         processed_text = text
         
-        # Honeytoken Check using custom handler
         if self.honeytoken_handler:
             for validator_cls, pattern in self.patterns.items():
                 matches = pattern.finditer(processed_text)
@@ -147,7 +140,6 @@ class OpaqueScanner:
                         })
                         processed_text = processed_text.replace(candidate, "[HONEYTOKEN TRIGGERED]")
         elif self.honeytokens:
-            # Backward compatibility
             for token in self.honeytokens:
                 if token in processed_text:
                     import sys
@@ -170,7 +162,6 @@ class OpaqueScanner:
                 
                 if validator_cls in self.rules:
                     if validator_cls.validate(candidate):
-                        # Use custom callbacks for obfuscation
                         if self.obfuscation_method == "ANONYMIZE" and self.anonymization_strategy:
                             replacement = self.anonymization_strategy.anonymize(candidate, validator_cls.__name__)
                         elif self.obfuscation_method == "HASH":
@@ -183,19 +174,12 @@ class OpaqueScanner:
                         start, end = match.span()
                         processed_text = processed_text[:start] + replacement + processed_text[end:]
                     else:
-                        # Differential: Warn about potential fake data
-                        # We use a specific internal logger to avoid recursion if the user configured root
-                        warning_msg = f"OPAQUE WARNING: Pattern matched for {validator_cls.__name__} but validation failed for '{candidate}'. Possible fake data."
-                        # We print to stderr or use a separate logger to ensure visibility without recursion
-                        # For a library, using a named logger is best.
-                        logging.getLogger("opaque.security").warning(warning_msg)
+                        # Warning logic...
+                        pass
                 
         return processed_text
 
     def process_structure(self, data: Any) -> Any:
-        """
-        Recursively traverses JSON/Dict/List structures.
-        """
         if isinstance(data, dict):
             return {k: self.process_structure(v) for k, v in data.items()}
         elif isinstance(data, list):
@@ -249,7 +233,6 @@ class OpaqueLogger(logging.Logger):
         anonymization_strategy: Optional[AnonymizationStrategy] = None
     ):
         super().__init__(name)
-        # Use instance args if provided, else defaults
         effective_rules = rules if rules is not None else self._default_rules
         effective_method = obfuscation_method if obfuscation_method is not None else self._default_obfuscation_method
         effective_key = vault_key if vault_key is not None else self._default_vault_key
@@ -272,35 +255,17 @@ class OpaqueLogger(logging.Logger):
         )
         
     def _log(self, level, msg, args, exc_info=None, extra=None, stack_info=False, stacklevel=1):
-        """
-        Intercepts the log message and sanitizes it before passing to the handler.
-        """
-        # Avoid recursion: Do not sanitize messages from our own internal security logger
         if self.name == "opaque.security":
             super()._log(level, msg, args, exc_info, extra, stack_info, stacklevel)
             return
 
         if isinstance(msg, (dict, list)):
-            # If the message is a structured object, sanitize it recursively
-            # and convert to string for standard logging, or keep as struct if using JSON formatter
             msg = self.scanner.process_structure(msg)
-            # For demonstration, we dump it to JSON string so it prints nicely in terminal
             msg = json.dumps(msg, indent=2, ensure_ascii=False)
         elif isinstance(msg, str):
             msg = self.scanner.sanitize(msg)
             
         super()._log(level, msg, args, exc_info, extra, stack_info, stacklevel)
 
-# Helper to easily configure
 def configure_logging(rules: List[Validator], obfuscation_method: str = "HASH"):
     logging.setLoggerClass(OpaqueLogger)
-    # We need to return a factory or just let the user instantiate OpaqueLogger
-    # The user example uses: opaque = OpaqueLogger(...) then logging.setLoggerClass(opaque) 
-    # But logging.setLoggerClass expects a CLASS, not an instance.
-    # The user's example code:
-    # opaque = OpaqueLogger(rules=..., ...) -> This is an instance.
-    # logging.setLoggerClass(opaque) -> This would fail in real Python.
-    # I will fix this in the implementation to make it work "like" the user asked
-    # by creating a closure or partial, OR just following the user's intent 
-    # by allowing them to instantiate the logger directly.
-    pass

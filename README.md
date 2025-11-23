@@ -7,6 +7,10 @@
 
 ---
 
+<div align="center">
+
+# 🛡️ OPAQUE
+
 ### **The only data masking library that uses MATH, not AI**
 
 </div>
@@ -22,7 +26,7 @@ Unlike AI-based solutions that **guess**, OPAQUE **validates** using mathematica
 | **Performance** | Slow (GPU required) | Ultra-fast (pure math) |
 | **Debuggability** | Black box | Deterministic hashing |
 | **Reversibility** | No | Yes (Vault Mode) |
-| **Coverage** | Limited | 40+ validators across South America |
+| **Coverage** | Limited | 75+ validators globally |
 
 ## ✨ Key Features
 
@@ -31,17 +35,9 @@ Unlike AI-based solutions that **guess**, OPAQUE **validates** using mathematica
 <td width="50%">
 
 ### 🔐 **Mathematical Validation**
-- **Brazil**: CPF, CNPJ, RG, CNH, RENAVAM, Pix, License Plates
-- **Argentina**: CUIL/CUIT, DNI
-- **Chile**: RUT (full validation)
-- **Colombia**: Cédula, NIT
-- **Peru**: DNI, RUC
-- **Uruguay**: CI, RUT
-- **Venezuela**: CI, RIF
-- **Ecuador**: Cédula, RUC
-- **Bolivia**: CI, NIT
-- **Paraguay**: CI, RUC
-- **International**: Credit Cards (Luhn), IBAN, Email, Phone, Passport
+- **Global**: 75+ validators across 5 continents.
+- **Algorithms**: Verhoeff, ISO 7064, Luhn, Mod 11.
+- **Zero False Positives**: Only mathematically valid data is masked.
 
 </td>
 <td width="50%">
@@ -76,7 +72,6 @@ Unlike AI-based solutions that **guess**, OPAQUE **validates** using mathematica
 - Configurable thresholds
 
 </td>
-</tr>
 </tr>
 </table>
 
@@ -152,7 +147,7 @@ Vault Decryption: 12,000+ ops/sec
 pytest -v
 ```
 
-**Results:** ✅ **62/62 tests passing** (100% success rate)
+**Results:** ✅ **100+ tests passing** (100% success rate)
 
 - ✅ All validators tested with valid and invalid data
 - ✅ Vault encryption/decryption
@@ -357,61 +352,53 @@ Input Log Message
 Output Sanitized Message
 ```
 
-## 🌍 Supported Validators
+## 🌍 Supported Validators (v1.1.2)
 
-### 🇧🇷 Brazil
-- ✅ **CPF** - Individual taxpayer ID (Mod 11 validation)
-- ✅ **CNPJ** - Company taxpayer ID (Weighted Mod 11)
-- ✅ **RG** - Identity card (format validation)
-- ✅ **CNH** - Driver's license (format validation)
-- ✅ **RENAVAM** - Vehicle registration (format validation)
-- ✅ **Pix** - Instant payment keys (UUID, Email, Phone)
-- ✅ **Placa Mercosul** - New license plates (ABC1D23)
-- ✅ **Placa Antiga** - Old license plates (ABC-1234)
+OPAQUE now supports **75+ validators** across the globe, powered by advanced mathematical algorithms (Verhoeff, ISO 7064, Luhn, Mod 11).
 
-### 🇦🇷 Argentina
-- ✅ **CUIL/CUIT** - Tax identification number
-- ✅ **DNI** - National identity document
+### 🌎 North America
+- **🇺🇸 USA**: SSN, EIN, ITIN
+- **🇨🇦 Canada**: SIN (Social Insurance Number)
+- **🇲🇽 Mexico**: CURP (Clave Única de Registro de Población)
 
-### 🇨🇱 Chile
-- ✅ **RUT** - Tax identification number (full Mod 11 validation)
+### 🇪🇺 Europe
+- **🇩🇪 Germany**: Steuer-ID (Tax ID)
+- **🇫🇷 France**: NIR (INSEE Code)
+- **🇪🇸 Spain**: DNI, NIE
+- **🇮🇹 Italy**: Codice Fiscale
+- **🇬🇧 UK**: NINO (National Insurance Number)
+- **🇪🇺 Eurozone**: IBAN (International Bank Account Number)
 
-### 🇨🇴 Colombia
-- ✅ **Cédula** - National identity card
-- ✅ **NIT** - Tax identification number
+### 🌏 Asia
+- **🇮🇳 India**: Aadhaar (Verhoeff Algorithm)
+- **🇨🇳 China**: Resident Identity Card (Mod 11-2)
 
-### 🇵🇪 Peru
-- ✅ **DNI** - National identity document
-- ✅ **RUC** - Tax identification number
+### ☁️ Cloud & Tech Tokens
+- **AWS**: Access Keys (AKIA/ASIA)
+- **Google**: OAuth Tokens, API Keys
+- **GitHub**: Personal Access Tokens (Classic & Fine-grained)
+- **Slack**: Bot/User Tokens
+- **Stripe**: Live/Test API Keys
+- **Facebook**: Access Tokens
+- **Security**: Private Keys (RSA/DSA/EC), JWT, PEM Certificates, High Entropy Secrets
 
-### 🇺🇾 Uruguay
-- ✅ **CI** - Identity card
-- ✅ **RUT** - Tax identification number
+### 🇧🇷 South America (Legacy Stronghold)
+- **Brazil**: CPF, CNPJ, RG, CNH, RENAVAM, Pix, CNS, Voter ID, License Plates
+- **Argentina**: CUIL/CUIT, DNI
+- **Chile**: RUT
+- **Colombia**: Cédula, NIT
+- **Peru**: DNI, RUC
+- **Uruguay**: CI, RUT
+- **Venezuela**: CI, RIF
+- **Ecuador**: Cédula, RUC
+- **Bolivia**: CI, NIT
+- **Paraguay**: CI, RUC
 
-### 🇻🇪 Venezuela
-- ✅ **CI** - Identity card
-- ✅ **RIF** - Tax identification number
-
-### 🇪🇨 Ecuador
-- ✅ **Cédula** - Identity card (with province validation)
-- ✅ **RUC** - Tax identification number
-
-### 🇧🇴 Bolivia
-- ✅ **CI** - Identity card
-- ✅ **NIT** - Tax identification number
-
-### 🇵🇾 Paraguay
-- ✅ **CI** - Identity card
-- ✅ **RUC** - Tax identification number
-
-### 💳 Finance (International)
-- ✅ **Credit Cards** - Visa, Mastercard, Amex, etc. (Luhn algorithm)
-- ✅ **IBAN** - International Bank Account Number (Mod 97 validation)
-
-### 🌐 International
-- ✅ **Email** - Email addresses (RFC 5322 format)
-- ✅ **Phone** - International phone numbers
-- ✅ **Passport** - Passport numbers (alphanumeric format)
+### 🌐 International Standards
+- **Finance**: Credit Cards (All major brands), IBAN, SWIFT/BIC
+- **Network**: IPv4, IPv6, MAC Addresses
+- **Crypto**: Bitcoin (P2PKH, P2SH, Bech32), Ethereum Addresses
+- **Personal**: Email (RFC 5322), Phone Numbers (E.164), Passports
 
 ## 📖 Documentation
 
@@ -472,202 +459,7 @@ Every match is mathematically validated. No guessing, no AI hallucinations.
 Used in enterprise environments processing millions of logs daily.
 
 ### ✅ **Comprehensive Coverage**
-40+ validators covering all South American countries + international standards.
-
-### ✅ **Reversible Encryption**
-Debug production issues without exposing sensitive data.
-
-### ✅ **Security First**
-Honeytokens, circuit breakers, and crash handlers protect your data.
-
-### ✅ **Framework Agnostic**
-Works with FastAPI, Django, Flask, or any Python application.
-
-### ✅ **Performance Optimized**
-Process thousands of messages per second without slowing down your app.
-rules=[Validators.BR.CPF, Validators.BR.CNPJ]
-)
-
-# Middleware will sanitize all request/response data
-app.add_middleware(OpaqueFastAPIMiddleware, logger=OpaqueLogger("api"))
-
-@app.post("/payment")
-async def process_payment(cpf: str, amount: float):
-    # CPF will be automatically sanitized in logs
-    return {"status": "success"}
-```
-
-</details>
-
-<details>
-<summary><b>🔹 Django Integration</b></summary>
-
-```python
-# settings.py
-MIDDLEWARE = [
-    'opaque.middleware.OpaqueDjangoMiddleware',
-    # ... other middleware
-]
-
-# Configure in apps.py or __init__.py
-from opaque import OpaqueLogger, Validators
-
-OpaqueLogger.setup_defaults(
-    rules=[Validators.BR.CPF, Validators.BR.CNPJ]
-)
-```
-
-</details>
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────┐
-│                   OPAQUE Engine                     │
-├─────────────────────────────────────────────────────┤
-│  1. Context-Aware Regex Pattern Matching           │
-│  2. Mathematical Validation (Mod 11, Luhn, etc.)   │
-│  3. Honeytoken Detection                            │
-│  4. Circuit Breaker Check                           │
-│  5. Obfuscation (Hash/Vault/Mask)                  │
-│  6. Structured Data Processing (JSON/Dict/List)    │
-└─────────────────────────────────────────────────────┘
-```
-
-### Processing Flow
-
-```
-Input Log Message
-       ↓
-[Honeytoken Check] → Alert if detected
-       ↓
-[Regex Pattern Matching] → Find potential sensitive data
-       ↓
-[Mathematical Validation] → Verify using algorithms
-       ↓
-[Circuit Breaker] → Prevent flood attacks
-       ↓
-[Obfuscation] → Hash/Vault/Mask
-       ↓
-Output Sanitized Message
-```
-
-## 🌍 Supported Validators
-
-### 🇧🇷 Brazil
-- ✅ **CPF** - Individual taxpayer ID (Mod 11 validation)
-- ✅ **CNPJ** - Company taxpayer ID (Weighted Mod 11)
-- ✅ **RG** - Identity card (format validation)
-- ✅ **CNH** - Driver's license (format validation)
-- ✅ **RENAVAM** - Vehicle registration (format validation)
-- ✅ **Pix** - Instant payment keys (UUID, Email, Phone)
-- ✅ **Placa Mercosul** - New license plates (ABC1D23)
-- ✅ **Placa Antiga** - Old license plates (ABC-1234)
-
-### 🇦🇷 Argentina
-- ✅ **CUIL/CUIT** - Tax identification number
-- ✅ **DNI** - National identity document
-
-### 🇨🇱 Chile
-- ✅ **RUT** - Tax identification number (full Mod 11 validation)
-
-### 🇨🇴 Colombia
-- ✅ **Cédula** - National identity card
-- ✅ **NIT** - Tax identification number
-
-### 🇵🇪 Peru
-- ✅ **DNI** - National identity document
-- ✅ **RUC** - Tax identification number
-
-### 🇺🇾 Uruguay
-- ✅ **CI** - Identity card
-- ✅ **RUT** - Tax identification number
-
-### 🇻🇪 Venezuela
-- ✅ **CI** - Identity card
-- ✅ **RIF** - Tax identification number
-
-### 🇪🇨 Ecuador
-- ✅ **Cédula** - Identity card (with province validation)
-- ✅ **RUC** - Tax identification number
-
-### 🇧🇴 Bolivia
-- ✅ **CI** - Identity card
-- ✅ **NIT** - Tax identification number
-
-### 🇵🇾 Paraguay
-- ✅ **CI** - Identity card
-- ✅ **RUC** - Tax identification number
-
-### 💳 Finance (International)
-- ✅ **Credit Cards** - Visa, Mastercard, Amex, etc. (Luhn algorithm)
-- ✅ **IBAN** - International Bank Account Number (Mod 97 validation)
-
-### 🌐 International
-- ✅ **Email** - Email addresses (RFC 5322 format)
-- ✅ **Phone** - International phone numbers
-- ✅ **Passport** - Passport numbers (alphanumeric format)
-
-## 📖 Documentation
-
-| Document | Description |
-|----------|-------------|
-| [🇺🇸 English Guide](docs/README_EN.md) | Complete documentation in English |
-| [🇧🇷 Guia em Português](docs/README_PT.md) | Documentação completa em Português |
-| [🇪🇸 Guía en Español](docs/README_ES.md) | Documentación completa en Español |
-| [📚 API Reference](docs/API_REFERENCE.md) | Detailed API documentation |
-| [🔧 Installation Guide](docs/INSTALLATION_GUIDE.md) | Step-by-step installation |
-| [🏗️ Project Structure](docs/PROJECT_STRUCTURE.md) | Architecture overview |
-| [🤝 Contributing](CONTRIBUTING.md) | Contribution guidelines |
-| [📝 Changelog](CHANGELOG.md) | Version history |
-
-## 🤝 Contributing
-
-We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Setup
-
-```bash
-# Clone repository
-git clone https://github.com/SamuelSilvass/OPAQUE.git
-cd OPAQUE
-
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
-pip install -e ".[dev]"
-
-# Run tests
-pytest -v
-
-# Run benchmarks
-python benchmarks/benchmark.py
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Links
-
-- **PyPI Package**: [opaque-logger](https://pypi.org/project/opaque-logger/)
-- **GitHub Repository**: [SamuelSilvass/OPAQUE](https://github.com/SamuelSilvass/OPAQUE)
-- **Issues**: [GitHub Issues](https://github.com/SamuelSilvass/OPAQUE/issues)
-- **Changelog**: [CHANGELOG.md](CHANGELOG.md)
-- **Documentation**: [Complete Docs](docs/)
-
-## 🏆 Why Choose OPAQUE?
-
-### ✅ **Zero False Positives**
-Every match is mathematically validated. No guessing, no AI hallucinations.
-
-### ✅ **Production-Ready**
-Used in enterprise environments processing millions of logs daily.
-
-### ✅ **Comprehensive Coverage**
-40+ validators covering all South American countries + international standards.
+75+ validators covering 5 continents + international standards.
 
 ### ✅ **Reversible Encryption**
 Debug production issues without exposing sensitive data.

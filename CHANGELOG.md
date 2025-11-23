@@ -5,6 +5,33 @@ All notable changes to OPAQUE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-11-23
+
+### 🌍 Global Expansion & Advanced Algorithms
+
+This release transforms OPAQUE into a truly global solution, adding support for North America, Europe, Asia, and advanced Cloud/Tech token detection.
+
+### ✨ Added
+- **Global Validators**:
+  - **North America**: SIN (Canada), CURP (Mexico), EIN (USA).
+  - **Europe**: Steuer-ID (Germany), NIR (France), DNI/NIE (Spain), Codice Fiscale (Italy), NINO (UK).
+  - **Asia**: Aadhaar (India), Resident Identity Card (China).
+- **Tech & Cloud Tokens**:
+  - AWS Keys, Google OAuth, Facebook Tokens, Slack Tokens, Stripe Keys, GitHub Tokens.
+  - Private Keys (RSA, DSA, EC).
+  - JWT and PEM Certificate detection.
+- **Advanced Algorithms**:
+  - Implemented **Verhoeff Algorithm** (dihedral group D5) for Indian Aadhaar and others.
+  - Implemented **ISO 7064** (Mod 97-10, Mod 11-2) for IBAN and international standards.
+  - Optimized **Luhn Algorithm** for credit cards and identification numbers.
+
+### 🔧 Improved
+- **Validator Architecture**: Refactored `validators.py` to use shared mathematical kernels in `algorithms.py`.
+- **Regex Engine**: Pre-compiled regex patterns for all new validators to ensure zero performance penalty.
+- **Test Suite**: Added global test coverage, reaching 100+ test cases.
+
+---
+
 ## [1.1.1] - 2025-11-23
 
 ### 🛡️ Security & Compliance Update

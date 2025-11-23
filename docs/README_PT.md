@@ -29,25 +29,47 @@ Diferente de soluções baseadas em IA que **adivinham**, OPAQUE **valida** usan
 **🇧🇷 Brasil:**
 - CPF (Mod 11), CNPJ (Mod 11 ponderado), RG, CNH, RENAVAM
 - Pix (UUID, Email, Telefone), Placas Mercosul e Antigas
+- **Novo:** CNS (Cartão Nacional de Saúde), Título de Eleitor
 
-**🌎 América do Sul:**
-- 🇦🇷 Argentina: CUIL/CUIT, DNI
-- 🇨🇱 Chile: RUT (validação completa)
-- 🇨🇴 Colômbia: Cédula, NIT
-- 🇵🇪 Peru: DNI, RUC
-- 🇺🇾 Uruguai: CI, RUT
-- 🇻🇪 Venezuela: CI, RIF
-- 🇪🇨 Equador: Cédula, RUC
-- 🇧🇴 Bolívia: CI, NIT
-- 🇵🇾 Paraguai: CI, RUC
+**🌎 América do Sul (Placas e Documentos):**
 
-**🌐 Internacional:**
-- Cartões de Crédito (Luhn), IBAN, Email, Telefone, Passaporte
+**🌎 América do Sul (Placas e Documentos):**
+- 🇦🇷 Argentina: CUIL/CUIT, DNI, Placas (Mercosul e Antigas)
+- �🇴 Bolívia: CI, NIT, Placas
+- �🇨🇱 Chile: RUT, Placas (Novas e Antigas)
+- 🇨🇴 Colômbia: Cédula, NIT, Placas
+- 🇨 Equador: Cédula, RUC, Placas
+- �🇾 Paraguai: CI, RUC, Placas (Mercosul e Antigas)
+- �🇪 Peru: DNI, RUC, Placas (Novas e Antigas)
+- �� Uruguai: CI, RUT, Placas (Mercosul e Antigas)
+- �� Venezuela: CI, RIF, Placas
+
+- **Novo:** IPv4, IPv6, Endereço MAC
+- **Cripto:** Endereços Bitcoin (Legacy, Segwit, Bech32) e Ethereum
+- **Segurança:** JWT (JSON Web Tokens), Certificados PEM (SSL/TLS)
+
+**☁️ Cloud & DevOps (Novo):**
+
+**☁️ Cloud & DevOps (Novo):**
+- AWS Access Keys, GitHub Tokens (Clássico e Fine-grained)
+- Slack Tokens, Google API Keys
+- **Segurança:** Detecção de Entropia (Strings aleatórias/senhas)
+- **Internacional:** SSN (EUA), NINO (Reino Unido)
+
+### 🏦 Modo Vault
 
 ### 🏦 Modo Vault
 - Criptografia AES-256 reversível
 - Ferramenta CLI para descriptografia
 - Proteção com chave mestra
+
+### 💻 CLI Profissional (v2.0)
+- **Modo Interativo:** Shell em tempo real para validação (`opaque interactive`)
+- **Analyze:** Escaneie textos ou arquivos em busca de segredos (`opaque analyze`)
+- **Demo:** Simulação visual das capacidades (`opaque demo`)
+- **Benchmark:** Teste de performance da sua máquina (`opaque benchmark`)
+- **Validação:** Verifique documentos instantaneamente (`opaque validate`)
+- **Scan & Audit:** Varredura completa de diretórios (`opaque scan`)
 
 ### 🍯 Honeytokens
 - Detecção de intrusão
@@ -133,7 +155,71 @@ logger.info("Processando CPF 529.982.247-25")
 
 # Descriptografar depois
 python -m opaque.cli reveal "[VAULT:gAAAAABl...]" --key=sua-chave-mestra
-# Saída: 🔓 DADOS REVELADOS: 529.982.247-25
+# Saída:
+# 🔓 Decrypted Data
+# 529.982.247-25
+```
+
+### Validação via CLI
+
+Você pode validar documentos diretamente pelo terminal:
+
+```bash
+python -m opaque.cli validate PLATES.MERCOSUL_BR "ABC1D23"
+```
+
+**Saída:**
+```
+╭─ Validation Result ─╮
+│ VALID               │
+│                     │
+│ Value: ABC1D23      │
+│ Type: PLATES.MERCOSUL_BR │
+╰─────────────────────╯
+```
+
+### Análise de Segredos (Analyze)
+
+Escaneie arquivos ou textos em busca de chaves de API, tokens e dados sensíveis:
+
+```bash
+python -m opaque.cli analyze "config.json"
+# Ou texto direto
+python -m opaque.cli analyze "Minha chave AWS é AKIAIOSFODNN7EXAMPLE"
+# Saída em JSON para CI/CD
+python -m opaque.cli analyze "src/" --json > report.json
+```
+
+### Demo Visual
+
+Veja o OPAQUE em ação com uma simulação visual:
+
+```bash
+python -m opaque.cli demo
+```
+
+### Modo Interativo
+
+Entre no shell interativo do OPAQUE para validações rápidas:
+
+```bash
+python -m opaque.cli interactive
+```
+
+**Saída:**
+```
+opaque > BR.CPF 529.982.247-25
+✔ VALID
+opaque > INTERNATIONAL.BITCOIN_ADDR 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+✔ VALID
+```
+
+### Benchmark de Performance
+
+Teste a velocidade do OPAQUE na sua máquina:
+
+```bash
+python -m opaque.cli benchmark
 ```
 
 ### Honeytokens (Detecção de Intrusão)
@@ -402,10 +488,10 @@ OPAQUE segue a **Arquitetura de Elite**:
 ### Finanças
 *   **Cartões de Crédito**: Valida usando algoritmo de Luhn (Visa, Mastercard, Amex, etc.)
 
-### Em Breve
-*   CNH (Carteira de Habilitação)
-*   Renavam (Registro de Veículo)
-*   Placas Mercosul
+### Placas de Veículos (América do Sul)
+*   **Mercosul**: Brasil, Argentina, Uruguai, Paraguai
+*   **Nacionais/Antigas**: Todos os países da América do Sul suportados
+*   **Formatos**: Validação rigorosa de padrões (letras, números, posições)
 
 ## 📚 Exemplos Avançados
 

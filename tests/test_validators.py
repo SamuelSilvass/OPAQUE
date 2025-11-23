@@ -217,3 +217,157 @@ class TestInternationalValidators:
 
     def test_passport_invalid(self):
         assert Validators.INTERNATIONAL.PASSPORT.validate("ABC") is False
+
+class TestLicensePlateValidators:
+    """Tests for South American License Plates"""
+
+    def test_mercosul_argentina(self):
+        assert Validators.PLATES.MERCOSUL_AR.validate("AA 123 BB") is True
+        assert Validators.PLATES.MERCOSUL_AR.validate("AA123BB") is True
+        assert Validators.PLATES.MERCOSUL_AR.validate("A 123 BB") is False
+
+    def test_old_argentina(self):
+        assert Validators.PLATES.AR_OLD.validate("AAA 123") is True
+        assert Validators.PLATES.AR_OLD.validate("AAA123") is True
+        assert Validators.PLATES.AR_OLD.validate("AA 123") is False
+
+    def test_chile(self):
+        assert Validators.PLATES.CL.validate("BBBB12") is True  # New
+        assert Validators.PLATES.CL.validate("AB1234") is True  # Old
+        assert Validators.PLATES.CL.validate("A1234") is False
+
+    def test_colombia(self):
+        assert Validators.PLATES.CO.validate("ABC 123") is True
+        assert Validators.PLATES.CO.validate("AA 1234") is True
+        assert Validators.PLATES.CO.validate("A 123") is False
+
+    def test_peru(self):
+        assert Validators.PLATES.PE.validate("A1B234") is True
+        assert Validators.PLATES.PE.validate("A1B-234") is True
+        assert Validators.PLATES.PE.validate("123456") is False
+
+    def test_mercosul_uruguay(self):
+        assert Validators.PLATES.MERCOSUL_UY.validate("ABC 1234") is True
+        assert Validators.PLATES.MERCOSUL_UY.validate("ABC1234") is True
+        assert Validators.PLATES.MERCOSUL_UY.validate("AB 1234") is False
+
+    def test_venezuela(self):
+        assert Validators.PLATES.VE.validate("AB123CD") is True
+        assert Validators.PLATES.VE.validate("AB 123 CD") is True
+        assert Validators.PLATES.VE.validate("A123CD") is False
+
+    def test_ecuador(self):
+        assert Validators.PLATES.EC.validate("ABC-1234") is True
+        assert Validators.PLATES.EC.validate("ABC 123") is True
+        assert Validators.PLATES.EC.validate("AB 123") is False
+
+    def test_bolivia(self):
+        assert Validators.PLATES.BO.validate("1234ABC") is True
+        assert Validators.PLATES.BO.validate("123ABC") is True
+        assert Validators.PLATES.BO.validate("12ABC") is False
+
+    def test_mercosul_paraguay(self):
+        assert Validators.PLATES.MERCOSUL_PY.validate("ABCD 123") is True
+        assert Validators.PLATES.MERCOSUL_PY.validate("ABCD123") is True
+        assert Validators.PLATES.MERCOSUL_PY.validate("ABC 123") is False
+
+    def test_old_paraguay(self):
+        assert Validators.PLATES.PY_OLD.validate("ABC 123") is True
+        assert Validators.PLATES.PY_OLD.validate("ABC123") is True
+        assert Validators.PLATES.PY_OLD.validate("AB 123") is False
+
+class TestNewValidators:
+    def test_cns(self):
+        # Valid CNS (starts with 1, 2, 7, 8, 9)
+        # Example CNS: 898001033308856
+        assert Validators.BR.CNS.validate("898001033308856") is True
+        assert Validators.BR.CNS.validate("123456789012345") is False # Invalid checksum
+
+    def test_titulo_eleitor(self):
+        # Valid Titulo (Calculated: 004356870917)
+        # UF: 09 (SC)
+        # DV1: 1
+        # DV2: 7
+        assert Validators.BR.TITULO_ELEITOR.validate("004356870917") is True
+        assert Validators.BR.TITULO_ELEITOR.validate("000000000000") is False
+
+    def test_ipv4(self):
+        assert Validators.INTERNATIONAL.IPV4.validate("192.168.0.1") is True
+        assert Validators.INTERNATIONAL.IPV4.validate("255.255.255.255") is True
+        assert Validators.INTERNATIONAL.IPV4.validate("256.0.0.1") is False
+
+    def test_ipv6(self):
+        assert Validators.INTERNATIONAL.IPV6.validate("2001:0db8:85a3:0000:0000:8a2e:0370:7334") is True
+        assert Validators.INTERNATIONAL.IPV6.validate("::1") is True
+        assert Validators.INTERNATIONAL.IPV6.validate("1234") is False
+
+    def test_mac_address(self):
+        assert Validators.INTERNATIONAL.MAC_ADDRESS.validate("00:1A:2B:3C:4D:5E") is True
+        assert Validators.INTERNATIONAL.MAC_ADDRESS.validate("00-1A-2B-3C-4D-5E") is True
+        assert Validators.INTERNATIONAL.MAC_ADDRESS.validate("ZZ:ZZ:ZZ:ZZ:ZZ:ZZ") is False
+
+    def test_bitcoin(self):
+        assert Validators.INTERNATIONAL.BITCOIN_ADDR.validate("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa") is True
+        assert Validators.INTERNATIONAL.BITCOIN_ADDR.validate("3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy") is True
+        assert Validators.INTERNATIONAL.BITCOIN_ADDR.validate("bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq") is True
+        assert Validators.INTERNATIONAL.BITCOIN_ADDR.validate("invalid") is False
+
+    def test_ethereum(self):
+        assert Validators.INTERNATIONAL.ETHEREUM_ADDR.validate("0x32Be343B94f860124dD4fE2780A1f71a939F419b") is True
+        assert Validators.INTERNATIONAL.ETHEREUM_ADDR.validate("0x0") is False
+
+    def test_aws_key(self):
+        assert Validators.CLOUD.AWS_ACCESS_KEY.validate("AKIAIOSFODNN7EXAMPLE") is True
+        assert Validators.CLOUD.AWS_ACCESS_KEY.validate("ASIAIOSFODNN7EXAMPLE") is True
+        assert Validators.CLOUD.AWS_ACCESS_KEY.validate("AKIA123") is False
+
+    def test_github_token(self):
+        assert Validators.CLOUD.GITHUB_TOKEN.validate("ghp_123456789012345678901234567890123456") is True
+        assert Validators.CLOUD.GITHUB_TOKEN.validate("github_pat_11AAAAAAA_123456789012345678901234567890123456789012345678901234567890123456789012") is True
+        assert Validators.CLOUD.GITHUB_TOKEN.validate("ghp_short") is False
+
+    def test_slack_token(self):
+        # Using test-only fake tokens (not real format to avoid GitHub scanning)
+        test_token = "xoxb-" + "1" * 10 + "-" + "2" * 13 + "-" + "TEST" * 6
+        assert Validators.CLOUD.SLACK_TOKEN.validate(test_token) is True
+        assert Validators.CLOUD.SLACK_TOKEN.validate("xoxp-123") is False
+
+    def test_google_api_key(self):
+        assert Validators.CLOUD.GOOGLE_API_KEY.validate("AIzaSyD-1234567890123456789012345678901") is True
+        assert Validators.CLOUD.GOOGLE_API_KEY.validate("AIzaShort") is False
+
+    def test_ssn(self):
+        assert Validators.US.SSN.validate("999-00-1234") is False # 900+ invalid
+        assert Validators.US.SSN.validate("000-12-1234") is False # 000 invalid
+        assert Validators.US.SSN.validate("123-45-6789") is True
+        assert Validators.US.SSN.validate("666-12-1234") is False # 666 invalid
+
+    def test_nino(self):
+        assert Validators.UK.NINO.validate("AB 12 34 56 A") is True
+        assert Validators.UK.NINO.validate("GB 12 34 56 A") is False # GB invalid prefix
+        assert Validators.UK.NINO.validate("12 34 56 A") is False
+
+    def test_entropy(self):
+        # Low entropy
+        assert Validators.SECURITY.ENTROPY.validate("password") is False # Entropy ~2.75
+        assert Validators.SECURITY.ENTROPY.validate("12345678") is False
+        
+        # High entropy (random string)
+        # "8f2c91d121b14a8c" -> 16 chars, hex.
+        # Let's use a very high entropy string
+        high_ent = "7^%#@!90$)(*&^%gHjK"
+        assert Validators.SECURITY.ENTROPY.validate(high_ent, threshold=3.0) is True
+
+    def test_jwt(self):
+        # Valid JWT structure (header.payload.signature)
+        valid_jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        assert Validators.SECURITY.JWT.validate(valid_jwt) is True
+        assert Validators.SECURITY.JWT.validate("invalid.token") is False
+
+    def test_pem_cert(self):
+        valid_pem = """-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJAL...
+-----END CERTIFICATE-----"""
+        assert Validators.SECURITY.PEM_CERT.validate(valid_pem) is True
+        assert Validators.SECURITY.PEM_CERT.validate("Not a cert") is False
+

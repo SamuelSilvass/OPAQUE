@@ -1,50 +1,89 @@
 # OPAQUE 🛡️
 
-**El Motor Determinístico de Enmascaramiento de Datos para Ingeniería de Alto Rendimiento.**
+**Motor Determinístico de Enmascaramiento de Datos**
 
-> "No adivines si es un CPF. Pruébalo matemáticamente."
+> "No adivines si es un CPF. Demuéstralo matemáticamente."
 
-[![Pruebas](https://img.shields.io/badge/pruebas-24%20aprobadas-brightgreen)]()
-[![Python](https://img.shields.io/badge/python-3.8%2B-blue)]()
-[![Licencia](https://img.shields.io/badge/licencia-MIT-blue)]()
+[![Pruebas](https://img.shields.io/badge/pruebas-62%20aprobadas-brightgreen)](https://github.com/SamuelSilvass/OPAQUE)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![PyPI](https://img.shields.io/badge/PyPI-opaque--logger-blue)](https://pypi.org/project/opaque-logger/)
+[![Licencia](https://img.shields.io/badge/licencia-MIT-green)](../LICENSE)
 
-OPAQUE es una biblioteca de sanitización de alto rendimiento y consciente del contexto, diseñada para entornos empresariales donde la integridad de datos y el rendimiento son innegociables. A diferencia de las soluciones basadas en IA que "adivinan", OPAQUE valida matemáticamente.
+## 🎯 ¿Por qué OPAQUE?
 
-## 🚀 ¿Por qué OPAQUE?
+A diferencia de las soluciones basadas en IA que **adivinan**, OPAQUE **valida** usando algoritmos matemáticos:
 
-*   **Núcleo en Rust**: Construido para velocidad. Procesa gigabytes de logs sin ralentizar tu aplicación.
-*   **Validación Determinística**: Calculamos el Dígito Verificador (Módulo 11, Luhn). Si las matemáticas no cuadran, no tocamos tus datos. Sin falsos positivos.
-*   **Huella Digital Segura**: En lugar de `***`, usamos hashes SHA256 con sal (ej: `[HASH-XF92]`). Rastrea errores en logs sin revelar la identidad del usuario.
-*   **Integración Zero-Config**: Reemplazo directo para el `logging` estándar de Python.
-*   **Modo Bóveda**: Encriptación AES-256 reversible para debugging sin exponer datos.
-*   **Honeytokens**: Detecta intentos de intrusión con datos señuelo.
-*   **Disyuntor**: Previene que la inundación de logs tumbe tu servidor.
+| Característica | Soluciones IA | OPAQUE |
+|----------------|---------------|---------|
+| **Validación** | Redes neuronales (adivinación) | Algoritmos matemáticos (prueba) |
+| **Falsos Positivos** | Comunes | Cero |
+| **Rendimiento** | Lento (requiere GPU) | Ultra-rápido (matemática pura) |
+| **Depuración** | Caja negra | Hashing determinístico |
+| **Reversibilidad** | No | Sí (Modo Vault) |
+| **Cobertura** | Limitada | 40+ validadores en Sudamérica |
 
-## 🧪 Pruebas
+## ✨ Características Principales
 
-OPAQUE viene con una suite de pruebas completa que garantiza precisión matemática.
+### 🔐 Validación Matemática
 
-```bash
-pip install pytest
-pytest
-```
+**🇧🇷 Brasil:**
+- CPF (Mod 11), CNPJ (Mod 11 ponderado), RG, CNH, RENAVAM
+- Pix (UUID, Email, Teléfono), Placas Mercosur y Antiguas
+- **Nuevo:** CNS (Tarjeta Nacional de Salud), Título de Elector
 
-**Cobertura de Pruebas:**
-- ✅ 24 casos de prueba cubriendo todos los validadores
-- ✅ Encriptación/desencriptación de Bóveda
-- ✅ Detección de honeytokens
-- ✅ Activación del disyuntor
-- ✅ Sanitización del crash handler
+**🌎 Sudamérica (Placas y Documentos):**
+- 🇦🇷 Argentina: CUIL/CUIT, DNI, Placas (Mercosur y Antiguas)
+- 🇧🇴 Bolivia: CI, NIT, Placas
+- 🇨🇱 Chile: RUT, Placas (Nuevas y Antiguas)
+- 🇨🇴 Colombia: Cédula, NIT, Placas
+- 🇪🇨 Ecuador: Cédula, RUC, Placas
+- 🇵🇾 Paraguay: CI, RUC, Placas (Mercosur y Antiguas)
+- 🇵🇪 Perú: DNI, RUC, Placas (Nuevas y Antiguas)
+- 🇺🇾 Uruguay: CI, RUT, Placas (Mercosur y Antiguas)
+- 🇻🇪 Venezuela: CI, RIF, Placas
 
-## 📦 Instalación
+**🌐 Internacional:**
+- Tarjetas de Crédito (Luhn), IBAN, Email, Teléfono, Pasaporte
+- **Nuevo:** IPv4, IPv6, Dirección MAC
+- **Cripto:** Direcciones Bitcoin (Legacy, Segwit, Bech32) y Ethereum
+- **Seguridad:** JWT (JSON Web Tokens), Certificados PEM (SSL/TLS)
+
+**☁️ Cloud & DevOps (Nuevo):**
+- AWS Access Keys, GitHub Tokens (Clásico y Fine-grained)
+- Slack Tokens, Google API Keys
+- **Seguridad:** Detección de Entropía (Cadenas aleatorias/contraseñas)
+- **Internacional:** SSN (EE.UU.), NINO (Reino Unido)
+
+### 🏦 Modo Vault
+- Cifrado AES-256 reversible
+- Herramienta CLI para descifrado
+- Protección con clave maestra
+
+### 💻 CLI Profesional (v2.0)
+- **Modo Interativo:** Shell en tiempo real para validación (`opaque interactive`)
+- **Analyze:** Escanee textos o archivos en busca de secretos (`opaque analyze`)
+- **Demo:** Simulación visual de capacidades (`opaque demo`)
+- **Benchmark:** Prueba de rendimiento de su máquina (`opaque benchmark`)
+- **Validación:** Verifique documentos instantáneamente (`opaque validate`)
+- **Scan & Audit:** Escaneo completo de directorios (`opaque scan`)
+
+### 🍯 Honeytokens
+- Detección de intrusiones
+- Alertas en tiempo real
+- Datos señuelo para seguridad
+
+### ⚡ Circuit Breaker
+- Protección contra inundación
+- Auto-recuperación
+- Optimización de recursos
+
+## 🚀 Inicio Rápido
+
+### Instalación
 
 ```bash
 pip install opaque-logger
 ```
-
-*(Requiere toolchain Rust para extensiones de alto rendimiento, con fallback a Python puro si no está disponible)*
-
-## ⚡ Inicio Rápido
 
 ### Uso Básico
 
@@ -52,59 +91,134 @@ pip install opaque-logger
 import logging
 from opaque import OpaqueLogger, Validators
 
-# 1. Configurar
+# Configurar
 OpaqueLogger.setup_defaults(
-    rules=[Validators.BR.CPF, Validators.BR.CNPJ, Validators.FINANCE.CREDIT_CARD],
+    rules=[
+        Validators.BR.CPF,
+        Validators.BR.CNPJ,
+        Validators.FINANCE.CREDIT_CARD
+    ],
     obfuscation_method="HASH"
 )
 
-# 2. Integrar
+# Integrar
 logging.setLoggerClass(OpaqueLogger)
-logger = logging.getLogger("pagos")
+logger = logging.getLogger("app")
 
-# 3. Registrar con Seguridad
-payload = {
-    "usuario": "Alice",
-    "cpf": "529.982.247-25",  # Válido -> [HASH-3A4C]
-    "nota": "Error en 111.222.333-44" # Inválido -> Mantenido
-}
-
-logger.error(payload)
+# Registrar con seguridad
+logger.info("CPF del usuario: 529.982.247-25")
+# Salida: CPF del usuario: [HASH-3A4C]
 ```
 
-**Salida:**
-```json
-{
-  "usuario": "Alice",
-  "cpf": "[HASH-3A4C]",
-  "nota": "Error en 111.222.333-44"
-}
+## 📊 Benchmarks de Rendimiento
+
+```
+Sanitización:     1.000+ mensajes/seg
+Validación CPF:   65.000+ ops/seg
+Validación CNPJ:  68.000+ ops/seg
+Tarjeta Crédito:  122.000+ ops/seg
+Cifrado:          22.000+ ops/seg
+Descifrado:       12.000+ ops/seg
 ```
 
-### Modo Bóveda (Encriptación Reversible)
+## 🧪 Cobertura de Pruebas
+
+✅ **62/62 pruebas aprobadas** (100% de éxito)
+
+```bash
+pytest -v
+```
+
+## 📚 Ejemplos Completos
+
+### Modo Vault (Cifrado Reversible)
 
 ```python
 import os
-os.environ["OPAQUE_MASTER_KEY"] = "tu-clave-secreta-aqui"
+from opaque import OpaqueLogger, Validators
+
+os.environ["OPAQUE_MASTER_KEY"] = "su-clave-maestra"
 
 OpaqueLogger.setup_defaults(
     rules=[Validators.BR.CPF],
     obfuscation_method="VAULT",
-    vault_key="tu-clave-secreta-aqui"
+    vault_key="su-clave-maestra"
 )
 
 logger = logging.getLogger("seguro")
 logger.info("Procesando CPF 529.982.247-25")
 # Salida: Procesando CPF [VAULT:gAAAAABl...]
+
+# Descifrar después
+python -m opaque.cli reveal "[VAULT:gAAAAABl...]" --key=su-clave-maestra
+# Salida:
+# 🔓 Decrypted Data
+# 529.982.247-25
 ```
 
-**Revelar datos encriptados:**
+### Validación vía CLI
+
+Puede validar documentos directamente desde la terminal:
+
 ```bash
-python -m opaque.cli reveal "[VAULT:gAAAAABl...]" --key=tu-clave-secreta-aqui
-# Salida: 🔓 REVEALED DATA: 529.982.247-25
+python -m opaque.cli validate PLATES.MERCOSUL_BR "ABC1D23"
 ```
 
-### Honeytokens (Detección de Intrusión)
+**Salida:**
+```
+╭─ Validation Result ─╮
+│ VALID               │
+│                     │
+│ Value: ABC1D23      │
+│ Type: PLATES.MERCOSUL_BR │
+╰─────────────────────╯
+```
+
+### Análisis de Secretos (Analyze)
+
+Escanee archivos o textos en busca de claves API, tokens y datos sensibles:
+
+```bash
+python -m opaque.cli analyze "config.json"
+# O texto directo
+python -m opaque.cli analyze "Mi clave AWS es AKIAIOSFODNN7EXAMPLE"
+# Salida JSON para CI/CD
+python -m opaque.cli analyze "src/" --json > report.json
+```
+
+### Demo Visual
+
+Vea OPAQUE en acción con una simulación visual:
+
+```bash
+python -m opaque.cli demo
+```
+
+### Modo Interativo
+
+Ingrese al shell interactivo de OPAQUE para validaciones rápidas:
+
+```bash
+python -m opaque.cli interactive
+```
+
+**Salida:**
+```
+opaque > BR.CPF 529.982.247-25
+✔ VALID
+opaque > INTERNATIONAL.BITCOIN_ADDR 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+✔ VALID
+```
+
+### Benchmark de Rendimiento
+
+Pruebe la velocidad de OPAQUE en su máquina:
+
+```bash
+python -m opaque.cli benchmark
+```
+
+### Honeytokens (Detección de Intrusiones)
 
 ```python
 OpaqueLogger.setup_defaults(
@@ -113,87 +227,34 @@ OpaqueLogger.setup_defaults(
 )
 
 logger = logging.getLogger("seguridad")
-logger.info("Intento de acceso con CPF 999.888.777-66")
-# Stderr: 🚨 ALERTA VERMELHO: HONEYTOKEN DETECTED: 999.888.777-66
-# Salida: Intento de acceso con CPF [HONEYTOKEN TRIGGERED]
+logger.info("Acceso con CPF 999.888.777-66")
+# Stderr: 🚨 ALERTA ROJA: HONEYTOKEN DETECTADO: 999.888.777-66
+# Salida: Acceso con CPF [HONEYTOKEN TRIGGERED]
 ```
 
-### Sanitización de Volcados de Crash
+### Soporte Multi-País
 
 ```python
-from opaque import install_crash_handler, OpaqueLogger, Validators
+from opaque import OpaqueLogger, Validators
 
-# Configurar
-OpaqueLogger.setup_defaults(rules=[Validators.BR.CPF])
-install_crash_handler()
-
-# Ahora todos los crashes tendrán tracebacks sanitizados
-contraseña = "super_secreta"
-cpf = "529.982.247-25"
-raise ValueError(f"Error procesando {cpf}")
-# Traceback mostrará: ValueError: Error procesando [HASH-3A4C]
-# Locals mostrará: contraseña = [REDACTED_SECRET_KEY]
-```
-
-### Auditoría de Cumplimiento
-
-```bash
-python -m opaque.cli scan ./src --output=informe_cumplimiento.html
-```
-
-**Salida:**
-```
-🔍 Scanning directory: ./src...
-✅ Report generated: informe_cumplimiento.html
-🛡️ Security Score: 98%
-```
-
-## 🛠️ Arquitectura
-
-OPAQUE sigue la **Arquitectura de Elite**:
-
-1.  **Núcleo**: Rust + PyO3 para rendimiento de metal (fallback a Python optimizado).
-2.  **C.A.R.E.**: Motor de Regex Consciente del Contexto con análisis de Ventana Deslizante.
-3.  **Huella Digital**: Hashing determinístico para depurabilidad.
-4.  **Bóveda**: Encriptación AES-256 de nivel militar.
-5.  **Disyuntor**: Resiliencia contra inundación de logs.
-
-## 🇧🇷 Validadores Soportados
-
-### Brasil
-*   **CPF**: Valida usando algoritmo Módulo 11
-*   **CNPJ**: Valida usando Módulo 11 ponderado
-*   **Pix**: Formatos Email, Teléfono (+55), UUID
-
-### Finanzas
-*   **Tarjetas de Crédito**: Valida usando algoritmo de Luhn (Visa, Mastercard, Amex, etc.)
-
-### Próximamente
-*   CNH (Licencia de Conducir)
-*   Renavam (Registro de Vehículo)
-*   Placas Mercosur
-
-## 📚 Ejemplos Avanzados
-
-### Validador Personalizado
-
-```python
-from opaque.validators import Validator
-import re
-
-class ValidadorEmail(Validator):
-    @staticmethod
-    def validate(email: str) -> bool:
-        patron = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-        return bool(re.match(patron, email))
-
-# Usar
 OpaqueLogger.setup_defaults(
-    rules=[ValidadorEmail]
+    rules=[
+        Validators.BR.CPF,      # Brasil
+        Validators.AR.DNI,      # Argentina
+        Validators.CL.RUT,      # Chile
+        Validators.CO.CEDULA,   # Colombia
+        Validators.PE.DNI,      # Perú
+        Validators.FINANCE.CREDIT_CARD,  # Internacional
+    ]
 )
+
+logger = logging.getLogger("latam")
+logger.info("BR CPF: 529.982.247-25")  # Sanitizado
+logger.info("CL RUT: 12.345.678-5")    # Sanitizado
+logger.info("Tarjeta: 4532-1488-0343-6467")  # Sanitizado
 ```
 
-### Middleware FastAPI
+### Integración FastAPI
 
 ```python
 from fastapi import FastAPI
@@ -206,150 +267,51 @@ OpaqueLogger.setup_defaults(
     rules=[Validators.BR.CPF, Validators.BR.CNPJ]
 )
 
-# Middleware sanitizará todos los datos de request/response
 app.add_middleware(OpaqueFastAPIMiddleware, logger=OpaqueLogger("api"))
+
+@app.post("/pago")
+async def procesar_pago(cpf: str, monto: float):
+    # CPF será automáticamente sanitizado en los logs
+    return {"estado": "éxito"}
 ```
 
-### Integración Django
+## 🏗️ Arquitectura
 
-```python
-# settings.py
-MIDDLEWARE = [
-    'opaque.middleware.OpaqueDjangoMiddleware',
-    # ... otros middleware
-]
-
-# Configurar en apps.py o __init__.py
-from opaque import OpaqueLogger, Validators
-
-OpaqueLogger.setup_defaults(
-    rules=[Validators.BR.CPF, Validators.BR.CNPJ]
-)
+```
+┌─────────────────────────────────────────────────────┐
+│                   Motor OPAQUE                      │
+├─────────────────────────────────────────────────────┤
+│  1. Coincidencia de Patrones Regex                 │
+│  2. Validación Matemática (Mod 11, Luhn, etc.)    │
+│  3. Detección de Honeytokens                       │
+│  4. Verificación de Circuit Breaker                │
+│  5. Ofuscación (Hash/Vault/Mask)                   │
+│  6. Procesamiento de Datos Estructurados          │
+└─────────────────────────────────────────────────────┘
 ```
 
-## 🔧 Opciones de Configuración
+## 📖 Documentación
 
-### OpaqueLogger.setup_defaults()
+| Documento | Descripción |
+|-----------|-------------|
+| [📚 Referencia de API](API_REFERENCE.md) | Documentación técnica detallada |
+| [🔧 Guía de Instalación](INSTALLATION_GUIDE.md) | Instalación paso a paso |
+| [🏗️ Estructura del Proyecto](PROJECT_STRUCTURE.md) | Visión general de arquitectura |
+| [🤝 Contribuir](../CONTRIBUTING.md) | Guía de contribución |
+| [📝 Changelog](../CHANGELOG.md) | Historial de versiones |
 
-| Parámetro | Tipo | Predeterminado | Descripción |
-|-----------|------|---------|-------------|
-| `rules` | `List[Validator]` | `[]` | Lista de clases validadoras a usar |
-| `obfuscation_method` | `str` | `"HASH"` | `"HASH"`, `"MASK"` (***), o `"VAULT"` |
-| `vault_key` | `str` | `None` | Clave maestra para encriptación del Modo Bóveda |
-| `honeytokens` | `List[str]` | `[]` | Lista de valores señuelo para detectar intrusión |
+## 🏆 ¿Por qué Elegir OPAQUE?
 
-### Variables de Entorno
-
-| Variable | Descripción |
-|----------|-------------|
-| `OPAQUE_MASTER_KEY` | Clave maestra predeterminada para Modo Bóveda |
-| `OPAQUE_SALT` | Sal para huella digital hash |
-
-## 🧪 Probando Tu Integración
-
-### Prueba 1: Sanitización Básica
-
-```python
-import logging
-from opaque import OpaqueLogger, Validators
-
-OpaqueLogger.setup_defaults(rules=[Validators.BR.CPF])
-logging.setLoggerClass(OpaqueLogger)
-logger = logging.getLogger("prueba")
-
-# Probar CPF válido
-logger.info("CPF: 529.982.247-25")
-# Esperado: CPF: [HASH-XXXX]
-
-# Probar CPF inválido
-logger.info("CPF: 111.222.333-44")
-# Esperado: CPF: 111.222.333-44 (sin cambios)
-```
-
-### Prueba 2: Encriptación de Bóveda
-
-```python
-from opaque import Vault
-
-boveda = Vault(key="clave-prueba-123")
-encriptado = boveda.encrypt("datos-sensibles")
-print(encriptado)  # [VAULT:gAAAA...]
-
-desencriptado = boveda.decrypt(encriptado)
-assert desencriptado == "datos-sensibles"
-```
-
-### Prueba 3: Detección de Honeytoken
-
-```python
-import sys
-from io import StringIO
-from opaque import OpaqueLogger, Validators
-
-# Capturar stderr
-old_stderr = sys.stderr
-sys.stderr = StringIO()
-
-OpaqueLogger.setup_defaults(
-    rules=[Validators.BR.CPF],
-    honeytokens=["999.888.777-66"]
-)
-
-logging.setLoggerClass(OpaqueLogger)
-logger = logging.getLogger("prueba")
-logger.info("Acceso: 999.888.777-66")
-
-salida_stderr = sys.stderr.getvalue()
-sys.stderr = old_stderr
-
-assert "HONEYTOKEN DETECTED" in salida_stderr
-```
-
-## 🐛 Solución de Problemas
-
-### Problema: "No module named 'opaque'"
-**Solución:** Asegúrate de que la instalación se completó con éxito:
-```bash
-pip install --upgrade opaque-logger
-```
-
-### Problema: Falla la desencriptación de Bóveda
-**Solución:** Asegúrate de usar la misma clave para encriptación y desencriptación:
-```python
-# Incorrecto
-boveda1 = Vault(key="clave1")
-encriptado = boveda1.encrypt("datos")
-boveda2 = Vault(key="clave2")
-boveda2.decrypt(encriptado)  # Fallará
-
-# Correcto
-boveda = Vault(key="clave1")
-encriptado = boveda.encrypt("datos")
-desencriptado = boveda.decrypt(encriptado)  # Funciona
-```
-
-### Problema: Disyuntor activándose con demasiada frecuencia
-**Solución:** Ajusta el límite en el scanner:
-```python
-from opaque.core import OpaqueScanner
-scanner = OpaqueScanner(rules=[...])
-scanner.CIRCUIT_THRESHOLD = 5000  # Aumentar del predeterminado 1000
-```
-
-## 🤝 Contribuyendo
-
-¡Las contribuciones son bienvenidas! Por favor consulta nuestra [Guía de Contribución](CONTRIBUTING.md).
-
-## 📄 Licencia
-
-Licencia MIT - ver archivo [LICENSE](LICENSE) para detalles.
-
-## 🔗 Enlaces
-
-*   **Documentación**: [Docs Completa](https://github.com/SamuelSilvass/OPAQUE)
-*   **Issues**: [GitHub Issues](https://github.com/SamuelSilvass/OPAQUE/issues)
-*   **PyPI**: [opaque-logger](https://pypi.org/project/opaque-logger)
+✅ **Cero Falsos Positivos** - Validación matemática, sin adivinación  
+✅ **Listo para Producción** - Usado en entornos empresariales  
+✅ **Cobertura Completa** - 40+ validadores para toda Sudamérica  
+✅ **Cifrado Reversible** - Debug sin exponer datos sensibles  
+✅ **Seguridad Primero** - Honeytokens y circuit breakers  
+✅ **Agnóstico de Framework** - FastAPI, Django, Flask  
+✅ **Rendimiento Optimizado** - Miles de mensajes por segundo  
 
 ---
 
-*Construido con precisión por el Equipo de Seguridad OPAQUE.*
+*Construido con precisión por Samuel Silva*
+
+**Protegiendo datos con matemática, no magia** ✨

@@ -20,6 +20,14 @@ OPAQUE is a high-performance, context-aware sanitization library designed for en
 *   **Honeytokens**: Detect intrusion attempts with bait data.
 *   **Circuit Breaker**: Prevents log flooding from crashing your server.
 
+### 💻 Professional CLI (v2.0)
+- **Interactive Mode**: Real-time validation shell (`opaque interactive`)
+- **Analyze**: Scan text or files for secrets (`opaque analyze`)
+- **Demo**: Visual capability simulation (`opaque demo`)
+- **Benchmark**: Performance testing tool (`opaque benchmark`)
+- **Validation**: Instant document verification (`opaque validate`)
+- **Scan & Audit**: Full directory scanning (`opaque scan`)
+
 ## 🧪 Testing
 
 OPAQUE comes with a comprehensive test suite ensuring mathematical precision.
@@ -104,6 +112,71 @@ python -m opaque.cli reveal "[VAULT:gAAAAABl...]" --key=your-secret-key-here
 # Output: 🔓 REVEALED DATA: 529.982.247-25
 ```
 
+### CLI Validation
+
+You can validate documents directly from the terminal:
+
+```bash
+python -m opaque.cli validate PLATES.MERCOSUL_BR "ABC1D23"
+```
+
+**Output:**
+```
+╭─ Validation Result ─╮
+│ VALID               │
+│                     │
+│ Value: ABC1D23      │
+│ Type: PLATES.MERCOSUL_BR │
+╰─────────────────────╯
+```
+
+╰─────────────────────╯
+```
+
+### Secret Analysis (Analyze)
+
+Scan files or text for API keys, tokens, and sensitive data:
+
+```bash
+python -m opaque.cli analyze "config.json"
+# Or direct text
+python -m opaque.cli analyze "My AWS key is AKIAIOSFODNN7EXAMPLE"
+# JSON output for CI/CD
+python -m opaque.cli analyze "src/" --json > report.json
+```
+
+### Visual Demo
+
+See OPAQUE in action with a visual simulation:
+
+```bash
+python -m opaque.cli demo
+```
+
+### Interactive Mode
+
+Enter the OPAQUE interactive shell for quick validations:
+
+```bash
+python -m opaque.cli interactive
+```
+
+**Output:**
+```
+opaque > BR.CPF 529.982.247-25
+✔ VALID
+opaque > INTERNATIONAL.BITCOIN_ADDR 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+✔ VALID
+```
+
+### Performance Benchmark
+
+Test OPAQUE speed on your machine:
+
+```bash
+python -m opaque.cli benchmark
+```
+
 ### Honeytokens (Intrusion Detection)
 
 ```python
@@ -164,14 +237,31 @@ OPAQUE follows the **Architecture of Elite**:
 *   **CPF**: Validates using Mod 11 algorithm
 *   **CNPJ**: Validates using weighted Mod 11
 *   **Pix**: Email, Phone (+55), UUID formats
+*   **New**: CNS (National Health Card), Voter ID (Título de Eleitor)
 
-### Finance
+### Finance & Crypto
 *   **Credit Cards**: Validates using Luhn algorithm (Visa, Mastercard, Amex, etc.)
+*   **Bitcoin**: Legacy, Segwit, Bech32 addresses
+*   **Ethereum**: Standard addresses
 
-### Coming Soon
-*   CNH (Driver's License)
-*   Renavam (Vehicle Registration)
-*   Mercosul License Plates
+### Network
+*   **IP**: IPv4 and IPv6
+*   **IP**: IPv4 and IPv6
+*   **MAC**: Standard MAC Addresses
+*   **Security**: JWT (JSON Web Tokens), PEM Certificates
+
+### Cloud & DevOps (New)
+*   **AWS**: Access Keys (AKIA/ASIA)
+*   **GitHub**: Personal Access Tokens (Classic & Fine-grained)
+*   **Slack**: API Tokens
+*   **Google**: API Keys
+*   **Security**: Entropy Validator (detects random strings/secrets)
+*   **International**: US SSN, UK NINO
+
+### License Plates (South America)
+*   **Mercosul**: Brazil, Argentina, Uruguay, Paraguay
+*   **National/Old**: All supported South American countries
+*   **Formats**: Strict validation of patterns (letters, numbers, positions)
 
 ## 📚 Advanced Examples
 

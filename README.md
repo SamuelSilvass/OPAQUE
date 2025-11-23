@@ -9,7 +9,7 @@
 
 <div align="center">
 
-# 🛡️ OPAQUE
+# 🛡️ OPAQUE v1.1.3
 
 ### **The only data masking library that uses MATH, not AI**
 
@@ -27,6 +27,7 @@ Unlike AI-based solutions that **guess**, OPAQUE **validates** using mathematica
 | **Debuggability** | Black box | Deterministic hashing |
 | **Reversibility** | No | Yes (Vault Mode) |
 | **Coverage** | Limited | 75+ validators globally |
+| **Integrations** | Few | Structlog, Loguru, Pydantic, Sentry, Presidio |
 
 ## ✨ Key Features
 
@@ -75,9 +76,89 @@ Unlike AI-based solutions that **guess**, OPAQUE **validates** using mathematica
 </tr>
 </table>
 
-## 🛡️ Enterprise Customization & Compliance (New in v1.1.1)
+## 🔌 Ecosystem Integrations (New in v1.1.3)
 
-OPAQUE v1.1.1 introduces powerful dependency injection to meet strict enterprise requirements:
+OPAQUE now integrates natively with your favorite tools:
+
+<details>
+<summary><b>🔹 Structlog</b></summary>
+
+```python
+import structlog
+from opaque.integrations.structlog_integration import OpaqueStructlogProcessor
+from opaque import Validators
+
+structlog.configure(
+    processors=[
+        OpaqueStructlogProcessor(rules=[Validators.BR.CPF]),
+        structlog.processors.JSONRenderer()
+    ]
+)
+```
+</details>
+
+<details>
+<summary><b>🔹 Loguru</b></summary>
+
+```python
+from loguru import logger
+from opaque.integrations.loguru_integration import OpaqueLoguruSink
+from opaque import Validators
+
+# Add OPAQUE sink
+sink = OpaqueLoguruSink(rules=[Validators.BR.CPF])
+logger.add(sink)
+```
+</details>
+
+<details>
+<summary><b>🔹 Pydantic</b></summary>
+
+```python
+from pydantic import BaseModel, field_validator
+from opaque.integrations.pydantic_integration import opaque_validator
+from opaque import Validators
+
+class User(BaseModel):
+    cpf: str
+    
+    @field_validator('cpf')
+    @classmethod
+    def validate_cpf(cls, v):
+        return opaque_validator(v, Validators.BR.CPF)
+```
+</details>
+
+<details>
+<summary><b>🔹 Sentry</b></summary>
+
+```python
+import sentry_sdk
+from opaque.integrations.sentry_integration import OpaqueSentryIntegration
+
+sentry_sdk.init(
+    integrations=[
+        OpaqueSentryIntegration(rules=[Validators.BR.CPF])
+    ]
+)
+```
+</details>
+
+<details>
+<summary><b>🔹 Microsoft Presidio</b></summary>
+
+```python
+from opaque.integrations.presidio_integration import OpaquePresidioAnalyzer
+
+# Combine Presidio's NLP with OPAQUE's Math
+analyzer = OpaquePresidioAnalyzer(opaque_rules=[Validators.BR.CPF])
+results = analyzer.analyze("My CPF is 529.982.247-25")
+```
+</details>
+
+## 🛡️ Enterprise Customization & Compliance
+
+OPAQUE v1.1.1+ introduces powerful dependency injection to meet strict enterprise requirements:
 
 ### 💉 Dependency Injection
 - **Custom Hash Functions**: Inject your own hashing algorithms (e.g., HMAC-SHA512, Argon2).
@@ -99,7 +180,11 @@ See our [Compliance Guide](docs/COMPLIANCE_GUIDE.md) for details.
 ### Installation
 
 ```bash
-pip install opaque-logger
+# Install with all integrations
+pip install opaque-logger[all]
+
+# Or specific ones
+pip install opaque-logger[structlog,pydantic]
 ```
 
 ### Basic Usage
@@ -147,7 +232,7 @@ Vault Decryption: 12,000+ ops/sec
 pytest -v
 ```
 
-**Results:** ✅ **100+ tests passing** (100% success rate)
+**Results:** ✅ **120+ tests passing** (100% success rate)
 
 - ✅ All validators tested with valid and invalid data
 - ✅ Vault encryption/decryption
@@ -156,6 +241,7 @@ pytest -v
 - ✅ Crash handler sanitization
 - ✅ Middleware integration
 - ✅ CLI tools
+- ✅ **New: Integration tests (Structlog, Loguru, Sentry, Pydantic)**
 
 ## 📚 Examples
 
@@ -352,7 +438,7 @@ Input Log Message
 Output Sanitized Message
 ```
 
-## 🌍 Supported Validators (v1.1.2)
+## 🌍 Supported Validators (v1.1.3)
 
 OPAQUE now supports **75+ validators** across the globe, powered by advanced mathematical algorithms (Verhoeff, ISO 7064, Luhn, Mod 11).
 
@@ -429,7 +515,7 @@ python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install dependencies
-pip install -e ".[dev]"
+pip install -e ".[dev,all]"
 
 # Run tests
 pytest -v

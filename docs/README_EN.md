@@ -443,3 +443,11 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ---
 
 *Built with precision by the OPAQUE Security Team.*
+
+## 📧 Contact
+
+For questions, suggestions, or support, please contact:
+
+**Email**: [ssanches011@gmail.com](mailto:ssanches011@gmail.com)
+
+Or open an issue on [GitHub Issues](https://github.com/SamuelSilvass/OPAQUE/issues)

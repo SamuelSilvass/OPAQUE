@@ -673,3 +673,11 @@ Licença MIT - veja arquivo [LICENSE](LICENSE) para detalhes.
 ---
 
 *Construído com precisão pela Equipe de Segurança OPAQUE.*
+
+## 📧 Contato
+
+Para dúvidas, sugestões ou suporte, entre em contato:
+
+**Email**: [ssanches011@gmail.com](mailto:ssanches011@gmail.com)
+
+Ou abra uma issue no [GitHub Issues](https://github.com/SamuelSilvass/OPAQUE/issues)

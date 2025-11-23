@@ -29,7 +29,7 @@ Example:
     # Output: User CPF: [HASH-3A4C]
 """
 
-__version__ = "0.1.1"
+__version__ = "1.1.0"
 __author__ = "OPAQUE Security Team"
 __license__ = "MIT"
 

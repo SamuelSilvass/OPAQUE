@@ -315,3 +315,13 @@ async def procesar_pago(cpf: str, monto: float):
 *Construido con precisión por Samuel Silva*
 
 **Protegiendo datos con matemática, no magia** ✨
+
+---
+
+## 📧 Contacto
+
+Para preguntas, sugerencias o soporte, por favor contacte:
+
+**Email**: [ssanches011@gmail.com](mailto:ssanches011@gmail.com)
+
+O abra un issue en [GitHub Issues](https://github.com/SamuelSilvass/OPAQUE/issues)

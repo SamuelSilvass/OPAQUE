@@ -465,6 +465,201 @@ Works with FastAPI, Django, Flask, or any Python application.
 
 ### ✅ **Performance Optimized**
 Process thousands of messages per second without slowing down your app.
+rules=[Validators.BR.CPF, Validators.BR.CNPJ]
+)
+
+# Middleware will sanitize all request/response data
+app.add_middleware(OpaqueFastAPIMiddleware, logger=OpaqueLogger("api"))
+
+@app.post("/payment")
+async def process_payment(cpf: str, amount: float):
+    # CPF will be automatically sanitized in logs
+    return {"status": "success"}
+```
+
+</details>
+
+<details>
+<summary><b>🔹 Django Integration</b></summary>
+
+```python
+# settings.py
+MIDDLEWARE = [
+    'opaque.middleware.OpaqueDjangoMiddleware',
+    # ... other middleware
+]
+
+# Configure in apps.py or __init__.py
+from opaque import OpaqueLogger, Validators
+
+OpaqueLogger.setup_defaults(
+    rules=[Validators.BR.CPF, Validators.BR.CNPJ]
+)
+```
+
+</details>
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────┐
+│                   OPAQUE Engine                     │
+├─────────────────────────────────────────────────────┤
+│  1. Context-Aware Regex Pattern Matching           │
+│  2. Mathematical Validation (Mod 11, Luhn, etc.)   │
+│  3. Honeytoken Detection                            │
+│  4. Circuit Breaker Check                           │
+│  5. Obfuscation (Hash/Vault/Mask)                  │
+│  6. Structured Data Processing (JSON/Dict/List)    │
+└─────────────────────────────────────────────────────┘
+```
+
+### Processing Flow
+
+```
+Input Log Message
+       ↓
+[Honeytoken Check] → Alert if detected
+       ↓
+[Regex Pattern Matching] → Find potential sensitive data
+       ↓
+[Mathematical Validation] → Verify using algorithms
+       ↓
+[Circuit Breaker] → Prevent flood attacks
+       ↓
+[Obfuscation] → Hash/Vault/Mask
+       ↓
+Output Sanitized Message
+```
+
+## 🌍 Supported Validators
+
+### 🇧🇷 Brazil
+- ✅ **CPF** - Individual taxpayer ID (Mod 11 validation)
+- ✅ **CNPJ** - Company taxpayer ID (Weighted Mod 11)
+- ✅ **RG** - Identity card (format validation)
+- ✅ **CNH** - Driver's license (format validation)
+- ✅ **RENAVAM** - Vehicle registration (format validation)
+- ✅ **Pix** - Instant payment keys (UUID, Email, Phone)
+- ✅ **Placa Mercosul** - New license plates (ABC1D23)
+- ✅ **Placa Antiga** - Old license plates (ABC-1234)
+
+### 🇦🇷 Argentina
+- ✅ **CUIL/CUIT** - Tax identification number
+- ✅ **DNI** - National identity document
+
+### 🇨🇱 Chile
+- ✅ **RUT** - Tax identification number (full Mod 11 validation)
+
+### 🇨🇴 Colombia
+- ✅ **Cédula** - National identity card
+- ✅ **NIT** - Tax identification number
+
+### 🇵🇪 Peru
+- ✅ **DNI** - National identity document
+- ✅ **RUC** - Tax identification number
+
+### 🇺🇾 Uruguay
+- ✅ **CI** - Identity card
+- ✅ **RUT** - Tax identification number
+
+### 🇻🇪 Venezuela
+- ✅ **CI** - Identity card
+- ✅ **RIF** - Tax identification number
+
+### 🇪🇨 Ecuador
+- ✅ **Cédula** - Identity card (with province validation)
+- ✅ **RUC** - Tax identification number
+
+### 🇧🇴 Bolivia
+- ✅ **CI** - Identity card
+- ✅ **NIT** - Tax identification number
+
+### 🇵🇾 Paraguay
+- ✅ **CI** - Identity card
+- ✅ **RUC** - Tax identification number
+
+### 💳 Finance (International)
+- ✅ **Credit Cards** - Visa, Mastercard, Amex, etc. (Luhn algorithm)
+- ✅ **IBAN** - International Bank Account Number (Mod 97 validation)
+
+### 🌐 International
+- ✅ **Email** - Email addresses (RFC 5322 format)
+- ✅ **Phone** - International phone numbers
+- ✅ **Passport** - Passport numbers (alphanumeric format)
+
+## 📖 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [🇺🇸 English Guide](docs/README_EN.md) | Complete documentation in English |
+| [🇧🇷 Guia em Português](docs/README_PT.md) | Documentação completa em Português |
+| [🇪🇸 Guía en Español](docs/README_ES.md) | Documentación completa en Español |
+| [📚 API Reference](docs/API_REFERENCE.md) | Detailed API documentation |
+| [🔧 Installation Guide](docs/INSTALLATION_GUIDE.md) | Step-by-step installation |
+| [🏗️ Project Structure](docs/PROJECT_STRUCTURE.md) | Architecture overview |
+| [🤝 Contributing](CONTRIBUTING.md) | Contribution guidelines |
+| [📝 Changelog](CHANGELOG.md) | Version history |
+
+## 🤝 Contributing
+
+We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+```bash
+# Clone repository
+git clone https://github.com/SamuelSilvass/OPAQUE.git
+cd OPAQUE
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest -v
+
+# Run benchmarks
+python benchmarks/benchmark.py
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- **PyPI Package**: [opaque-logger](https://pypi.org/project/opaque-logger/)
+- **GitHub Repository**: [SamuelSilvass/OPAQUE](https://github.com/SamuelSilvass/OPAQUE)
+- **Issues**: [GitHub Issues](https://github.com/SamuelSilvass/OPAQUE/issues)
+- **Changelog**: [CHANGELOG.md](CHANGELOG.md)
+- **Documentation**: [Complete Docs](docs/)
+
+## 🏆 Why Choose OPAQUE?
+
+### ✅ **Zero False Positives**
+Every match is mathematically validated. No guessing, no AI hallucinations.
+
+### ✅ **Production-Ready**
+Used in enterprise environments processing millions of logs daily.
+
+### ✅ **Comprehensive Coverage**
+40+ validators covering all South American countries + international standards.
+
+### ✅ **Reversible Encryption**
+Debug production issues without exposing sensitive data.
+
+### ✅ **Security First**
+Honeytokens, circuit breakers, and crash handlers protect your data.
+
+### ✅ **Framework Agnostic**
+Works with FastAPI, Django, Flask, or any Python application.
+
+### ✅ **Performance Optimized**
+Process thousands of messages per second without slowing down your app.
 
 ---
 
@@ -478,5 +673,15 @@ Process thousands of messages per second without slowing down your app.
 [![GitHub Forks](https://img.shields.io/github/forks/SamuelSilvass/OPAQUE?style=social)](https://github.com/SamuelSilvass/OPAQUE/fork)
 
 **Made with ❤️ for the developer community**
+
+---
+
+## 📧 Contact
+
+For questions, suggestions, or support, please contact:
+
+**Email**: [ssanches011@gmail.com](mailto:ssanches011@gmail.com)
+
+Or open an issue on [GitHub Issues](https://github.com/SamuelSilvass/OPAQUE/issues)
 
 </div>

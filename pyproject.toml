@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "opaque-logger"
-version = "1.0.2"
-description = "🛡️ The World's Most Advanced Data Masking Engine - Mathematical Validation, Zero False Positives, 77+ Validators"
+version = "1.1.0"
+description = "🛡️ Enterprise Data Masking Engine - Custom Callbacks, LGPD/GDPR Compliance, 77+ Validators, Zero False Positives"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Samuel Silva", email = "samuelsilvass@github.com"}
+    {name = "Samuel Silva", email = "ssanches011@gmail.com"}
 ]
 keywords = [
     "security", "gdpr", "lgpd", "masking", "logging", "data-protection", 

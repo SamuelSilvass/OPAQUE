@@ -1,0 +1,53 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2332;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d1419;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0099cc;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main shield shape -->
+  <path d="M 150 30 L 270 90 L 270 180 Q 270 220 150 280 Q 30 220 30 180 L 30 90 Z" 
+        fill="url(#shieldGradient)" 
+        stroke="#00d4ff" 
+        stroke-width="4"/>
+  
+  <!-- Inner hexagonal pattern -->
+  <g opacity="0.3" stroke="#00d4ff" stroke-width="2" fill="none">
+    <polygon points="150,90 180,105 180,135 150,150 120,135 120,105"/>
+    <polygon points="120,135 150,150 150,180 120,195 90,180 90,150"/>
+    <polygon points="180,135 210,150 210,180 180,195 150,180 150,150"/>
+    <polygon points="150,180 180,195 180,225 150,240 120,225 120,195"/>
+  </g>
+  
+  <!-- Mathematical checkmark -->
+  <g filter="url(#glow)">
+    <path d="M 110 150 L 135 185 L 200 110" 
+          stroke="url(#accentGradient)" 
+          stroke-width="16" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"
+          fill="none"/>
+  </g>
+  
+  <!-- Hash symbol elements -->
+  <g opacity="0.15" stroke="#8b9dc3" stroke-width="3">
+    <line x1="60" y1="110" x2="80" y2="130"/>
+    <line x1="220" y1="110" x2="240" y2="130"/>
+    <line x1="60" y1="220" x2="80" y2="200"/>
+    <line x1="220" y1="220" x2="240" y2="200"/>
+  </g>
+</svg>

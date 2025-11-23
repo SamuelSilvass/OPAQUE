@@ -1,12 +1,3 @@
-<div align="center">
-
-# 🛡️ OPAQUE
-
-### **Deterministic Data Masking Engine**
-
-*Don't guess if it's a CPF. Prove it mathematically.*
-
-[![Tests](https://img.shields.io/badge/tests-62%20passed-brightgreen?style=for-the-badge)](https://github.com/SamuelSilvass/OPAQUE)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
 [![PyPI](https://img.shields.io/badge/PyPI-opaque--logger-blue?style=for-the-badge&logo=pypi)](https://pypi.org/project/opaque-logger/)
 [![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)

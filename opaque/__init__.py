@@ -38,6 +38,16 @@ from .validators import Validators
 from .vault import Vault
 from .crash_handler import install_crash_handler
 from .audit import AuditScanner
+from .callbacks import (
+    HashFunction,
+    VaultInterface,
+    HoneytokenHandler,
+    AnonymizationStrategy,
+    DefaultHashFunction,
+    DeterministicPseudonymizer,
+    IrreversibleAnonymizer,
+    SimpleHoneytokenHandler,
+)
 
 __all__ = [
     "OpaqueLogger",
@@ -46,4 +56,14 @@ __all__ = [
     "Vault",
     "install_crash_handler",
     "AuditScanner",
+    # Callback interfaces
+    "HashFunction",
+    "VaultInterface",
+    "HoneytokenHandler",
+    "AnonymizationStrategy",
+    # Built-in implementations
+    "DefaultHashFunction",
+    "DeterministicPseudonymizer",
+    "IrreversibleAnonymizer",
+    "SimpleHoneytokenHandler",
 ]

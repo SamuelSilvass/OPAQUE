@@ -1,18 +1,59 @@
 import logging
 import re
 import json
-from typing import List, Any, Dict, Union, Optional
+from typing import List, Any, Dict, Union, Optional, Callable
 import time
 from .validators import Validators, Validator
 from .utils import Fingerprinter
 from .vault import Vault
+from .callbacks import (
+    HashFunction, VaultInterface, HoneytokenHandler, AnonymizationStrategy,
+    DefaultHashFunction, DeterministicPseudonymizer, IrreversibleAnonymizer,
+    SimpleHoneytokenHandler
+)
 
 class OpaqueScanner:
-    def __init__(self, rules: List[Validator], obfuscation_method: str = "HASH", vault_key: str = None, honeytokens: List[str] = None):
+    def __init__(
+        self, 
+        rules: List[Validator], 
+        obfuscation_method: str = "HASH", 
+        vault_key: str = None, 
+        honeytokens: List[str] = None,
+        hash_function: Optional[Callable[[str], str]] = None,
+        vault_implementation: Optional[VaultInterface] = None,
+        honeytoken_handler: Optional[HoneytokenHandler] = None,
+        anonymization_strategy: Optional[AnonymizationStrategy] = None
+    ):
         self.rules = rules
         self.obfuscation_method = obfuscation_method
+        
+        if hash_function:
+            self.hash_function = hash_function
+        else:
+            self.hash_function = DefaultHashFunction()
+        
+        if vault_implementation:
+            self.vault = vault_implementation
+        elif obfuscation_method == "VAULT":
+            self.vault = Vault(vault_key)
+        else:
+            self.vault = None
+        
+        if honeytoken_handler:
+            self.honeytoken_handler = honeytoken_handler
+        elif honeytokens:
+            self.honeytoken_handler = SimpleHoneytokenHandler(honeytokens)
+        else:
+            self.honeytoken_handler = None
+        
+        if anonymization_strategy:
+            self.anonymization_strategy = anonymization_strategy
+        elif obfuscation_method == "ANONYMIZE":
+            self.anonymization_strategy = IrreversibleAnonymizer()
+        else:
+            self.anonymization_strategy = None
+        
         self.fingerprinter = Fingerprinter()
-        self.vault = Vault(vault_key) if obfuscation_method == "VAULT" else None
         self.honeytokens = set(honeytokens or [])
         
         # Circuit Breaker State
@@ -93,22 +134,30 @@ class OpaqueScanner:
 
         processed_text = text
         
-        # Honeytoken Check (Simple substring check for speed)
-        for token in self.honeytokens:
-            if token in processed_text:
-                # ALERTA VERMELHO
-                # In a real app, this would be a webhook. For now, we log to stderr.
-                import sys
-                print(f"🚨 ALERTA VERMELHO: HONEYTOKEN DETECTED: {token}", file=sys.stderr)
-                # We still censor it!
-                processed_text = processed_text.replace(token, "[HONEYTOKEN TRIGGERED]")
+        # Honeytoken Check using custom handler
+        if self.honeytoken_handler:
+            for validator_cls, pattern in self.patterns.items():
+                matches = pattern.finditer(processed_text)
+                for match in matches:
+                    candidate = match.group()
+                    if self.honeytoken_handler.is_honeytoken(candidate):
+                        self.honeytoken_handler.on_detected(candidate, {
+                            "timestamp": time.time(),
+                            "validator": validator_cls.__name__
+                        })
+                        processed_text = processed_text.replace(candidate, "[HONEYTOKEN TRIGGERED]")
+        elif self.honeytokens:
+            # Backward compatibility
+            for token in self.honeytokens:
+                if token in processed_text:
+                    import sys
+                    print(f"🚨 ALERTA VERMELHO: HONEYTOKEN DETECTED: {token}", file=sys.stderr)
+                    processed_text = processed_text.replace(token, "[HONEYTOKEN TRIGGERED]")
 
         for validator_cls, pattern in self.patterns.items():
-            # Find all potential matches
             matches = list(pattern.finditer(processed_text))
             
-            # Circuit Breaker Counter
-            if len(matches) > 10: # If a single line has too many matches, it's suspicious
+            if len(matches) > 10:
                  self.error_count += len(matches)
             
             if self.error_count > self.CIRCUIT_THRESHOLD:
@@ -116,16 +165,16 @@ class OpaqueScanner:
                 self.last_reset = time.time()
                 return "[OPAQUE: LOG FLOOD PROTECTION ACTIVATED - DATA DISCARDED]"
 
-            # Iterate backwards to avoid index shifting issues during replacement
             for match in reversed(matches):
                 candidate = match.group()
                 
-                # 1. Mathematical Validation
                 if validator_cls in self.rules:
                     if validator_cls.validate(candidate):
-                        # 2. Obfuscation
-                        if self.obfuscation_method == "HASH":
-                            replacement = self.fingerprinter.hash(candidate)
+                        # Use custom callbacks for obfuscation
+                        if self.obfuscation_method == "ANONYMIZE" and self.anonymization_strategy:
+                            replacement = self.anonymization_strategy.anonymize(candidate, validator_cls.__name__)
+                        elif self.obfuscation_method == "HASH":
+                            replacement = self.hash_function(candidate)
                         elif self.obfuscation_method == "VAULT" and self.vault:
                             replacement = self.vault.encrypt(candidate)
                         else:

@@ -5,6 +5,36 @@ All notable changes to OPAQUE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2025-11-23
+
+### 🔌 Ecosystem Integration & Interoperability
+
+This release makes OPAQUE the most interoperable data masking library in Python, with native support for the ecosystem's most popular libraries.
+
+### ✨ Added
+- **Structlog Integration**: Automatic PII sanitization in structured logs with `OpaqueStructlogProcessor`.
+- **Loguru Integration**: Custom sink for Loguru with seamless OPAQUE sanitization.
+- **Pydantic Integration**: Mathematical validators as Pydantic field validators for data models.
+- **Sentry Integration**: Automatic sanitization of error reports before sending to Sentry.
+- **Microsoft Presidio Bridge**: Combine OPAQUE's mathematical validation with Presidio's pattern detection.
+- **Optional Dependencies**: Install only what you need with extras (`structlog`, `loguru`, `pydantic`, `sentry`, `presidio`, `all`).
+
+### 🧪 Testing
+- **Comprehensive Integration Tests**: 100% coverage of all integrations.
+- **Cross-Integration Tests**: Verified that multiple integrations work together seamlessly.
+- **No Breaking Changes**: All existing functionality preserved.
+
+### 📦 Installation
+```bash
+# Install with all integrations
+pip install opaque-logger[all]
+
+# Or install specific integrations
+pip install opaque-logger[structlog,pydantic]
+```
+
+---
+
 ## [1.1.2] - 2025-11-23
 
 ### 🌍 Global Expansion & Advanced Algorithms
